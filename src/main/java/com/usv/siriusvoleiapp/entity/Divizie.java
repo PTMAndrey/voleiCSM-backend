@@ -2,10 +2,9 @@ package com.usv.siriusvoleiapp.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -17,4 +16,9 @@ public class Divizie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idDivizie;
+
+    private String denumireDivizie;
+
+    @ManyToMany(mappedBy = "divizii")
+    private List<ClubSportiv> cluburiSportive= new ArrayList<>();
 }

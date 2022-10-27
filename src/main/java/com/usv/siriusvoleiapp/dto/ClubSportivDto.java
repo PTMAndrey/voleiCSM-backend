@@ -10,4 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ClubSportivDto {
+
+    private String numeClubSportiv;
+
+    private String viziuneClubSportiv;
+
+    private String istorieClubSportiv;
 }

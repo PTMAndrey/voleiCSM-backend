@@ -10,4 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class DivizieDto {
+    private Long idDivizie;
+
+    private String denumireDivizie;
 }
