@@ -1,6 +1,7 @@
 package com.usv.siriusvoleiapp.controller;
 
 import com.usv.siriusvoleiapp.dto.ClubSportivDto;
+import com.usv.siriusvoleiapp.dto.DivizieDto;
 import com.usv.siriusvoleiapp.entity.ClubSportiv;
 import com.usv.siriusvoleiapp.service.ClubSportivService;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,10 @@ public class ClubSportivController {
     @PutMapping("/{idClubSportiv}/divizie/{idDivizie}")
     public ResponseEntity<ClubSportiv> adaugareDivizieLaClubSportiv(@PathVariable Long idClubSportiv, @PathVariable Long idDivizie){
         return ResponseEntity.ok(clubSportivService.adaugareDivizieLaClubSportiv(idClubSportiv,idDivizie));
+    }
+
+    @GetMapping("/{id}/divizii")
+    public ResponseEntity<List<DivizieDto>> getDiviziiClubSportiv(@PathVariable Long id){
+        return ResponseEntity.ok(clubSportivService.getDiviziiClubSportiv(id));
     }
 }

@@ -1,5 +1,6 @@
 package com.usv.siriusvoleiapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class ClubSportiv {
 
     private String istorieClubSportiv;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name="clubSportiv_divizie",

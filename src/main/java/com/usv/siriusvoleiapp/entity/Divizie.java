@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 public class Divizie {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idDivizie;
 
     private String denumireDivizie;

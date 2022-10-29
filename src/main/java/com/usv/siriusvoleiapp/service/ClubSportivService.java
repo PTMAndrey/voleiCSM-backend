@@ -1,6 +1,7 @@
 package com.usv.siriusvoleiapp.service;
 
 import com.usv.siriusvoleiapp.dto.ClubSportivDto;
+import com.usv.siriusvoleiapp.dto.DivizieDto;
 import com.usv.siriusvoleiapp.entity.ClubSportiv;
 import com.usv.siriusvoleiapp.entity.Divizie;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClubSportivService {
@@ -81,5 +83,20 @@ public class ClubSportivService {
         clubSportivRepository.save(clubSportiv);
 
         return clubSportiv;
+    }
+
+    public List<DivizieDto> getDiviziiClubSportiv(Long idClub){
+        ClubSportiv clubSportiv=clubSportivRepository.findById(idClub).orElseThrow(()->{
+            throw new CrudOperationException("Clubul sportiv nu exista");
+        });
+
+        List<Divizie> divizii = clubSportiv.getDivizii();
+
+        return divizii.stream()
+                .map(divizie-> DivizieDto.builder()
+                        .idDivizie(divizie.getIdDivizie())
+                        .denumireDivizie(divizie.getDenumireDivizie())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

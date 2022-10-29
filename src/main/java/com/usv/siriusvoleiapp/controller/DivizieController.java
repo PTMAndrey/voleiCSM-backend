@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/divizii")
 public class DivizieController {
     private final DivizieService divizieService;
 
@@ -36,5 +37,10 @@ public class DivizieController {
     public ResponseEntity<Void> deleteDivizie(@PathVariable Long id){
         divizieService.deleteDivizie(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/cluburiSportive")
+    public ResponseEntity<List<ClubSportivDto>> getCluburiSportiveDinDivizie(@PathVariable Long id){
+        return ResponseEntity.ok(divizieService.getCluburiSportiveDinDivizie(id));
     }
 }
