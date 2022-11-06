@@ -7,4 +7,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class PremiiDto {
+    private Long id;
 }
