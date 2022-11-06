@@ -13,6 +13,8 @@ public class ClubSportivDto {
 
     private String numeClubSportiv;
 
+    private String logo;
+
     private String viziuneClubSportiv;
 
     private String istorieClubSportiv;

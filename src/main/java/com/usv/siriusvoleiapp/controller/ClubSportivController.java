@@ -2,12 +2,15 @@ package com.usv.siriusvoleiapp.controller;
 
 import com.usv.siriusvoleiapp.dto.ClubSportivDto;
 import com.usv.siriusvoleiapp.dto.DivizieDto;
+import com.usv.siriusvoleiapp.dto.PersoanaDto;
 import com.usv.siriusvoleiapp.entity.ClubSportiv;
 import com.usv.siriusvoleiapp.service.ClubSportivService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -25,13 +28,13 @@ public class ClubSportivController {
     }
 
     @PostMapping
-    public ResponseEntity<ClubSportivDto> addClubSportiv(@RequestBody ClubSportivDto clubSportivDto){
-        return ResponseEntity.ok(clubSportivService.addClubSportiv(clubSportivDto));
+    public ResponseEntity<ClubSportivDto> addClubSportiv(@RequestParam("file") MultipartFile file, @ModelAttribute ClubSportivDto clubSportivDto) throws IOException {
+        return ResponseEntity.ok(clubSportivService.addClubSportiv(file,clubSportivDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClubSportivDto> updateClubSportiv(@PathVariable Long id, @RequestBody ClubSportivDto clubSportivDto){
-        return ResponseEntity.ok(clubSportivService.updateClubSportiv(id,clubSportivDto));
+    public ResponseEntity<ClubSportivDto> updateClubSportiv(@PathVariable Long id, @ModelAttribute ClubSportivDto clubSportivDto, @RequestParam("file") MultipartFile file) throws IOException {
+        return ResponseEntity.ok(clubSportivService.updateClubSportiv(id,clubSportivDto,file));
     }
 
     @DeleteMapping("/{id}")
@@ -48,5 +51,15 @@ public class ClubSportivController {
     @GetMapping("/{id}/divizii")
     public ResponseEntity<List<DivizieDto>> getDiviziiClubSportiv(@PathVariable Long id){
         return ResponseEntity.ok(clubSportivService.getDiviziiClubSportiv(id));
+    }
+
+    @PutMapping("/{idClubSportiv}/persoana/{idPersoana}")
+    public ResponseEntity<ClubSportiv> adaugarePersoanaLaClubSportiv(@PathVariable Long idClubSportiv, @PathVariable Long idPersoana){
+        return ResponseEntity.ok(clubSportivService.adaugarePersoanaLaClubSportiv(idClubSportiv,idPersoana));
+    }
+
+    @GetMapping("/{id}/persoane")
+    public ResponseEntity<List<PersoanaDto>> getPersoaneClubSportiv(@PathVariable Long id){
+        return ResponseEntity.ok(clubSportivService.getPersoaneClubSportiv(id));
     }
 }

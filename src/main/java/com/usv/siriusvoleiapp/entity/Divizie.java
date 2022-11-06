@@ -1,5 +1,6 @@
 package com.usv.siriusvoleiapp.entity;
 
+import com.usv.siriusvoleiapp.declaratieEnum.EnumNumeDivizie;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,7 +17,8 @@ public class Divizie {
     @Id
     private Long idDivizie;
 
-    private String denumireDivizie;
+    @Enumerated(EnumType.ORDINAL)
+    private EnumNumeDivizie denumireDivizie;
 
     @ManyToMany(mappedBy = "divizii")
     private List<ClubSportiv> cluburiSportive= new ArrayList<>();

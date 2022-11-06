@@ -21,6 +21,8 @@ public class ClubSportiv {
 
     private String numeClubSportiv;
 
+    private String logo;
+
     private String viziuneClubSportiv;
 
     private String istorieClubSportiv;
@@ -33,5 +35,13 @@ public class ClubSportiv {
             inverseJoinColumns = @JoinColumn(name="idDivizie")
     )
     private List<Divizie> divizii = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = Persoana.class,
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name="pers_fk", referencedColumnName = "idClubSportiv")
+    private List<Persoana> persoane = new ArrayList<>();
 
 }

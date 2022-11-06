@@ -1,4 +1,4 @@
-package com.usv.siriusvoleiapp.imagine;
+package com.usv.siriusvoleiapp.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -43,7 +43,11 @@ public class AzureBlobService {
       blob.download(outputStream);
       final byte[] bytes = outputStream.toByteArray();
       return bytes;
+   }
 
+   public String getFileURL(String fileName){
+      BlobClient blob = blobContainerClient.getBlobClient(fileName);
+      return blob.getBlobUrl();
    }
 
    public List<String> listBlobs() {

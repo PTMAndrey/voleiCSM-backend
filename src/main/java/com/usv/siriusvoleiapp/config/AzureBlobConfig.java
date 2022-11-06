@@ -1,4 +1,4 @@
-package com.usv.siriusvoleiapp.imagine;
+package com.usv.siriusvoleiapp.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -4,8 +4,11 @@ import com.usv.siriusvoleiapp.dto.ClubSportivDto;
 import com.usv.siriusvoleiapp.dto.DivizieDto;
 import com.usv.siriusvoleiapp.entity.ClubSportiv;
 import com.usv.siriusvoleiapp.entity.Divizie;
+import com.usv.siriusvoleiapp.entity.Persoana;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
 import com.usv.siriusvoleiapp.repository.DivizieRepository;
+import com.usv.siriusvoleiapp.repository.PersoanaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,10 +17,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class DivizieService {
-    private final DivizieRepository divizieRepository;
+    @Autowired
+    private AzureBlobService azureBlobAdapter;
 
-    public DivizieService(DivizieRepository divizieRepository) {
+    private final DivizieRepository divizieRepository;
+    private final PersoanaRepository persoanaRepository;
+
+    public DivizieService(DivizieRepository divizieRepository, PersoanaRepository persoanaRepository) {
         this.divizieRepository = divizieRepository;
+        this.persoanaRepository = persoanaRepository;
     }
 
     public List<DivizieDto> getDivizii(){
@@ -71,7 +79,19 @@ public class DivizieService {
         return cluburiSportive.stream()
                 .map(club->ClubSportivDto.builder()
                         .numeClubSportiv(club.getNumeClubSportiv())
+                        .logo(azureBlobAdapter.getFileURL(club.getLogo()))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public Divizie adaugarePersoanaLaDivizie(Long idDivizie, Long idPersoana){
+        Divizie divizie=divizieRepository.findById(idDivizie).orElseThrow(()->{
+            throw new CrudOperationException("Divizia nu exista");
+        });
+
+        Persoana persoana=persoanaRepository.findById(idPersoana).orElseThrow(()->{
+            throw new CrudOperationException("Persoana nu exista");
+        });
+        return divizie;
     }
 }
