@@ -34,12 +34,13 @@ public class ClubSportivService {
         this.persoanaRepository = persoanaRepository;
     }
 
-    public List<ClubSportivDto> getCluburiSportive(){
+    public List<ClubSportiv> getCluburiSportive(){
         Iterable<ClubSportiv> iterableCluburiSportive = clubSportivRepository.findAll();
-        List<ClubSportivDto> cluburiSportive= new ArrayList<>();
+        List<ClubSportiv> cluburiSportive= new ArrayList<>();
 
         iterableCluburiSportive.forEach(clubSportiv ->
-                cluburiSportive.add(ClubSportivDto.builder()
+                cluburiSportive.add(ClubSportiv.builder()
+                                .idClubSportiv(clubSportiv.getIdClubSportiv())
                                 .numeClubSportiv(clubSportiv.getNumeClubSportiv())
                                 .logo(azureBlobAdapter.getFileURL(clubSportiv.getLogo()))
                                 .viziuneClubSportiv(clubSportiv.getViziuneClubSportiv())

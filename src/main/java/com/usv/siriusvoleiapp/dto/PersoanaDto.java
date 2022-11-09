@@ -2,6 +2,8 @@ package com.usv.siriusvoleiapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.usv.siriusvoleiapp.declaratieEnum.EnumNumeDivizie;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumPersonal;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumPost;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +29,9 @@ public class PersoanaDto {
 
     private String nationalitate;
 
-    private String post;
+    private EnumPersonal personal;
+
+    private EnumPost post;
 
     private String descriere;
 

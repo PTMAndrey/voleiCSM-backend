@@ -41,7 +41,7 @@ public class ClubSportiv {
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
     )
-    @JoinColumn(name="pers_fk", referencedColumnName = "idClubSportiv")
+    @JoinColumn(name="idClubSportiv", referencedColumnName = "idClubSportiv")
     private List<Persoana> persoane = new ArrayList<>();
 
 }

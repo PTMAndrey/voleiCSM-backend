@@ -23,7 +23,7 @@ public class ClubSportivController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClubSportivDto>> getCluburiSportive(){
+    public ResponseEntity<List<ClubSportiv>> getCluburiSportive(){
         return ResponseEntity.ok(clubSportivService.getCluburiSportive());
     }
 

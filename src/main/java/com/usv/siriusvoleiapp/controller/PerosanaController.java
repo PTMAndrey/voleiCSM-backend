@@ -1,6 +1,8 @@
 package com.usv.siriusvoleiapp.controller;
 
+import com.usv.siriusvoleiapp.dto.ClubSportivDto;
 import com.usv.siriusvoleiapp.dto.PersoanaDto;
+import com.usv.siriusvoleiapp.entity.IstoricPersoana;
 import com.usv.siriusvoleiapp.entity.Persoana;
 import com.usv.siriusvoleiapp.service.DivizieService;
 import com.usv.siriusvoleiapp.service.PersoanaService;
@@ -23,7 +25,7 @@ public class PerosanaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PersoanaDto>> getPersoane(){
+    public ResponseEntity<List<Persoana>> getPersoane(){
         return ResponseEntity.ok(persoanaService.getPersoane());
     }
 
@@ -42,4 +44,11 @@ public class PerosanaController {
         persoanaService.deletePersoana(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/{id}/istoricPwersoana")
+    public ResponseEntity<Persoana> adaugaIstoricPersoana(@PathVariable Long id, @RequestBody List<IstoricPersoana> istoricPersoana) throws IOException {
+        return ResponseEntity.ok(persoanaService.adaugaIstoricPersoana(id,istoricPersoana));
+    }
+
+
 }

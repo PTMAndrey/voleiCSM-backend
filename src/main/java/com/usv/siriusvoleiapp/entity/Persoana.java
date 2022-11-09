@@ -2,10 +2,14 @@ package com.usv.siriusvoleiapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.usv.siriusvoleiapp.declaratieEnum.EnumNumeDivizie;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumPersonal;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumPost;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -24,18 +28,30 @@ public class Persoana implements Serializable {
 
     private String prenume;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)
     private String dataNasterii;
 
     private String inalitime;
 
     private String nationalitate;
 
-    private String post;
+    @Enumerated
+    private EnumPersonal personal;
+
+    @Enumerated
+    private EnumPost post;
 
     private String descriere;
 
     @Enumerated(EnumType.ORDINAL)
     private EnumNumeDivizie numeDivizie;
+
+    @OneToMany(
+            targetEntity = IstoricPersoana.class,
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
+//    @JoinColumn(name="idPersoana", referencedColumnName = "idPersoana")
+    private List<IstoricPersoana> istoricPosturi = new ArrayList<>();
 
 }
