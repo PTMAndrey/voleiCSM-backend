@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +35,28 @@ public class AzureBlobService {
             multipartFile.getSize(), true);
         
       return multipartFile.getOriginalFilename();
+   }
+
+   public String uploadMultipleFile(List<MultipartFile> multipartFiles)
+           throws IOException {
+      String imagini="";
+
+      // Todo UUID
+      for (MultipartFile multipartFile: multipartFiles
+           ) {
+         BlobClient blob = blobContainerClient
+                 .getBlobClient(multipartFile.getOriginalFilename());
+         blob.upload(multipartFile.getInputStream(),
+                 multipartFile.getSize(), true);
+
+         if(imagini.length()==0)
+            imagini=imagini + multipartFile.getOriginalFilename();
+         else
+            imagini=imagini+", "+ multipartFile.getOriginalFilename();
+      }
+
+
+      return imagini;
    }
 
    public byte[] getFile(String fileName) 
