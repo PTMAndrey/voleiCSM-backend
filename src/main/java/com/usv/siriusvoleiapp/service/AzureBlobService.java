@@ -52,7 +52,7 @@ public class AzureBlobService {
          if(imagini.length()==0)
             imagini=imagini + multipartFile.getOriginalFilename();
          else
-            imagini=imagini+", "+ multipartFile.getOriginalFilename();
+            imagini=imagini + ", "+ multipartFile.getOriginalFilename();
       }
 
 

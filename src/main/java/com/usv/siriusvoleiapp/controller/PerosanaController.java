@@ -45,7 +45,7 @@ public class PerosanaController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/istoricPwersoana")
+    @PostMapping("/{id}/istoricPersoana")
     public ResponseEntity<Persoana> adaugaIstoricPersoana(@PathVariable Long id, @RequestBody List<IstoricPersoana> istoricPersoana) throws IOException {
         return ResponseEntity.ok(persoanaService.adaugaIstoricPersoana(id,istoricPersoana));
     }

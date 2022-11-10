@@ -81,8 +81,8 @@ public class PersoanaService {
         });
         String fileName;
         if(!file.isEmpty()){
-            fileName = azureBlobAdapter.upload(file);
             azureBlobAdapter.deleteBlob(persoana.getImagine());
+            fileName = azureBlobAdapter.upload(file);
         }
         else
             fileName=persoana.getImagine();
@@ -114,18 +114,6 @@ public class PersoanaService {
             throw new CrudOperationException("Persoana nu exista");
         });
 
-//        List<IstoricPersoana> listaIstoricPersoane=istoricPersoana.stream()
-//                .map(istPers->IstoricPersoana.builder()
-//                        .idPersoana(idPersoana)
-//                        .post(istPers.getPost())
-//                        .dataInceput(istPers.getDataInceput())
-//                        .dataFinal(istPers.getDataFinal())
-//                        .build()).collect(Collectors.toList());
-//
-//        IstoricPersoanaRepository.save(listaIstoricPersoane.stream()
-//                .collect(Collectors.toList()));
-
-
         if(persoana.getIstoricPosturi()==null)
             persoana.setIstoricPosturi(new ArrayList<>());
 
@@ -133,7 +121,6 @@ public class PersoanaService {
                 persoana.getIstoricPosturi().add(pers))
                 .collect(Collectors.toSet());
 
-//        persoana.getIstoricPosturi().add(istoricPersoana);
         persoanaRepository.save(persoana);
         return persoana;
     }
