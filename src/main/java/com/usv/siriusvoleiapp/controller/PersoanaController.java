@@ -16,11 +16,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/persoana")
-@CrossOrigin(origins = "http://localhost:3000")
-public class PerosanaController {
+public class PersoanaController {
     private final PersoanaService persoanaService;
 
-    public PerosanaController(PersoanaService persoanaService) {
+    public PersoanaController(PersoanaService persoanaService) {
         this.persoanaService = persoanaService;
     }
 
