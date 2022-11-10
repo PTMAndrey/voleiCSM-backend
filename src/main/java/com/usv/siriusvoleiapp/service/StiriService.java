@@ -1,16 +1,18 @@
 package com.usv.siriusvoleiapp.service;
 
+import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusStire;
 import com.usv.siriusvoleiapp.dto.StiriDto;
 import com.usv.siriusvoleiapp.entity.Stiri;
+import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
 import com.usv.siriusvoleiapp.repository.StiriRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,6 +61,55 @@ public class StiriService {
                 .build();
         stiriRepository.save(stiri);
         return  stiri;
+    }
+
+    public Stiri updateStire(Long id, StiriDto stiriDto, List<MultipartFile> multipartFiles) throws IOException {
+        Stiri stire=stiriRepository.findById(id).orElseThrow(()->{
+            throw new CrudOperationException("Stirea nu exista");
+        });
+        String numeImaginiStiri=stire.getImagini();
+
+        if(!multipartFiles.containsAll(Arrays.stream(stire.getImagini().split(", ")).toList()))
+        {
+            List<String> imagini= Arrays.stream(stire.getImagini().split(", ")).collect(Collectors.toList());
+            for(int i=0; i<imagini.size(); i++)
+                azureBlobAdapter.deleteBlob(imagini.get(i));
+
+            numeImaginiStiri=azureBlobAdapter.uploadMultipleFile(multipartFiles);
+        }
+
+        stire.setTitlu(stiriDto.getTitlu());
+        stire.setDescriere(stiriDto.getDescriere());
+        stire.setStatus(stiriDto.getStatus());
+        stire.setDataPublicarii(stiriDto.getDataPublicarii());
+        stire.setImagini(numeImaginiStiri);
+
+        stiriRepository.save(stire);
+        return stire;
+    }
+
+    public Stiri updateStatusStire(Long id, EnumStatusStire status, List<MultipartFile> multipartFiles){
+        Stiri stire=stiriRepository.findById(id).orElseThrow(()->{
+            throw new CrudOperationException("Stirea nu exista");
+        });
+
+        stire.setStatus(status);
+
+        stiriRepository.save(stire);
+
+        return stire;
+    }
+
+    public void deleteStire(Long id){
+        Stiri stire=stiriRepository.findById(id).orElseThrow(()->{
+            throw new CrudOperationException("Stirea nu exista");
+        });
+
+        List<String> imagini= Arrays.stream(stire.getImagini().split(", ")).collect(Collectors.toList());
+        for(int i=0; i<imagini.size(); i++)
+            azureBlobAdapter.deleteBlob(imagini.get(i));
+
+        stiriRepository.delete(stire);
     }
 
 }

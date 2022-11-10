@@ -5,6 +5,7 @@ import com.usv.siriusvoleiapp.dto.StiriDto;
 import com.usv.siriusvoleiapp.entity.Persoana;
 import com.usv.siriusvoleiapp.entity.Stiri;
 import com.usv.siriusvoleiapp.service.StiriService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,4 +32,14 @@ public class StiriController {
         return ResponseEntity.ok(stiriService.addStire(file,stiriDto));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Stiri> updateStire(@PathVariable Long id,@ModelAttribute StiriDto stiriDto, @RequestParam("file") List<MultipartFile> file) throws IOException {
+        return ResponseEntity.ok(stiriService.updateStire(id, stiriDto, file));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteStire(@PathVariable Long id){
+        stiriService.deleteStire(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
