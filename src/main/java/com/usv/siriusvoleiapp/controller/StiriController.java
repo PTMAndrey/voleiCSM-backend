@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/stiri")
@@ -34,17 +35,17 @@ public class StiriController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Stiri> updateStire(@PathVariable Long id,@ModelAttribute StiriDto stiriDto, @RequestParam("file") List<MultipartFile> file) throws IOException {
+    public ResponseEntity<Stiri> updateStire(@PathVariable UUID id,@ModelAttribute StiriDto stiriDto, @RequestParam("file") List<MultipartFile> file) throws IOException {
         return ResponseEntity.ok(stiriService.updateStire(id, stiriDto, file));
     }
 
     @PutMapping("/{id}/updateStatus")
-    public ResponseEntity<Stiri> updateStatusStire(@PathVariable Long id, @RequestParam("status") EnumStatusStire status) {
+    public ResponseEntity<Stiri> updateStatusStire(@PathVariable UUID id, @RequestParam("status") EnumStatusStire status) {
         return ResponseEntity.ok(stiriService.updateStatusStire(id, status));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStire(@PathVariable Long id){
+    public ResponseEntity<Void> deleteStire(@PathVariable UUID id){
         stiriService.deleteStire(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

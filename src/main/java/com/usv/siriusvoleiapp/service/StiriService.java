@@ -31,7 +31,7 @@ public class StiriService {
 
         iterableStiri.forEach(stire->
                 stiri.add(Stiri.builder()
-                                .idStiri(stire.getIdStiri())
+                                .id(stire.getId())
                                 .titlu(stire.getTitlu())
                                 .descriere(stire.getDescriere())
                                 .status(stire.getStatus())
@@ -66,7 +66,7 @@ public class StiriService {
         return  stiri;
     }
 
-    public Stiri updateStire(Long id, StiriDto stiriDto, List<MultipartFile> multipartFiles) throws IOException {
+    public Stiri updateStire(UUID id, StiriDto stiriDto, List<MultipartFile> multipartFiles) throws IOException {
         Stiri stire=stiriRepository.findById(id).orElseThrow(()->{
             throw new CrudOperationException("Stirea nu exista");
         });
@@ -91,7 +91,7 @@ public class StiriService {
         return stire;
     }
 
-    public Stiri updateStatusStire(Long id, EnumStatusStire status){
+    public Stiri updateStatusStire(UUID id, EnumStatusStire status){
         Stiri stire=stiriRepository.findById(id).orElseThrow(()->{
             throw new CrudOperationException("Stirea nu exista");
         });
@@ -103,7 +103,7 @@ public class StiriService {
         return stire;
     }
 
-    public void deleteStire(Long id){
+    public void deleteStire(UUID id){
         Stiri stire=stiriRepository.findById(id).orElseThrow(()->{
             throw new CrudOperationException("Stirea nu exista");
         });

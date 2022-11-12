@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -17,7 +18,7 @@ import java.util.List;
 public class Stiri {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idStiri;
+    private UUID id;
 
     @NotBlank(message = "Name is mandatory")
     private String titlu;
