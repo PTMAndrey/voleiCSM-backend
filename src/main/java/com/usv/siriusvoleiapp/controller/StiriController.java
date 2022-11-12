@@ -1,5 +1,6 @@
 package com.usv.siriusvoleiapp.controller;
 
+import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusStire;
 import com.usv.siriusvoleiapp.dto.PersoanaDto;
 import com.usv.siriusvoleiapp.dto.StiriDto;
 import com.usv.siriusvoleiapp.entity.Persoana;
@@ -35,6 +36,11 @@ public class StiriController {
     @PutMapping("/{id}")
     public ResponseEntity<Stiri> updateStire(@PathVariable Long id,@ModelAttribute StiriDto stiriDto, @RequestParam("file") List<MultipartFile> file) throws IOException {
         return ResponseEntity.ok(stiriService.updateStire(id, stiriDto, file));
+    }
+
+    @PutMapping("/{id}/updateStatus")
+    public ResponseEntity<Stiri> updateStatusStire(@PathVariable Long id, @RequestParam("status") EnumStatusStire status) {
+        return ResponseEntity.ok(stiriService.updateStatusStire(id, status));
     }
 
     @DeleteMapping("/{id}")

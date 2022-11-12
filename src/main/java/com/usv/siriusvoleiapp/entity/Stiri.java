@@ -3,9 +3,9 @@ package com.usv.siriusvoleiapp.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusStire;
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -19,13 +19,17 @@ public class Stiri {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idStiri;
 
+    @NotBlank(message = "Name is mandatory")
     private String titlu;
 
+    @NotBlank(message = "Name is mandatory")
     private String descriere;
 
     @Enumerated
+    @NotBlank(message = "Name is mandatory")
     private EnumStatusStire status;
 
+    @NotBlank(message = "Name is mandatory")
     @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)
     private String dataPublicarii;
 

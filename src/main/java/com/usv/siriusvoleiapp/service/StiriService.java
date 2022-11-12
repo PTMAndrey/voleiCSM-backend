@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,12 +24,14 @@ public class StiriService {
         this.stiriRepository = stiriRepository;
     }
 
+
     public List<Stiri> getStiri(String statusCerut){
         Iterable<Stiri> iterableStiri=stiriRepository.findAll();
         List<Stiri> stiri= new ArrayList<>();
 
         iterableStiri.forEach(stire->
                 stiri.add(Stiri.builder()
+                                .idStiri(stire.getIdStiri())
                                 .titlu(stire.getTitlu())
                                 .descriere(stire.getDescriere())
                                 .status(stire.getStatus())
@@ -44,6 +43,7 @@ public class StiriService {
                                                 ).collect(Collectors.toList())
                                 )
                         .build()));
+
         if(statusCerut.equals("TOATE"))
             return stiri;
         else
@@ -51,7 +51,10 @@ public class StiriService {
     }
 
     public Stiri addStire (List<MultipartFile> multipartFiles, StiriDto stiriDto) throws IOException {
-        String numeImaginiStiri=azureBlobAdapter.uploadMultipleFile(multipartFiles);
+        String numeImaginiStiri = null;
+
+        if(multipartFiles.get(0).getSize()!=0)
+            numeImaginiStiri=azureBlobAdapter.uploadMultipleFile(multipartFiles);
         Stiri stiri= Stiri.builder()
                 .titlu(stiriDto.getTitlu())
                 .descriere(stiriDto.getDescriere())
@@ -88,7 +91,7 @@ public class StiriService {
         return stire;
     }
 
-    public Stiri updateStatusStire(Long id, EnumStatusStire status, List<MultipartFile> multipartFiles){
+    public Stiri updateStatusStire(Long id, EnumStatusStire status){
         Stiri stire=stiriRepository.findById(id).orElseThrow(()->{
             throw new CrudOperationException("Stirea nu exista");
         });
