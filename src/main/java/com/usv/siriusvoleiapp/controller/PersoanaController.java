@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/persoana")
@@ -34,18 +35,18 @@ public class PersoanaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Persoana> updatePersoana(@PathVariable Long id, @ModelAttribute PersoanaDto persoanaDto, @RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<Persoana> updatePersoana(@PathVariable UUID id, @ModelAttribute PersoanaDto persoanaDto, @RequestParam("file") MultipartFile file) throws IOException {
         return ResponseEntity.ok(persoanaService.updatePersoana(id,persoanaDto,file));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePersoana(@PathVariable Long id){
+    public ResponseEntity<Void> deletePersoana(@PathVariable UUID id){
         persoanaService.deletePersoana(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/{id}/istoricPersoana")
-    public ResponseEntity<Persoana> adaugaIstoricPersoana(@PathVariable Long id, @RequestBody List<IstoricPersoana> istoricPersoana) throws IOException {
+    public ResponseEntity<Persoana> adaugaIstoricPersoana(@PathVariable UUID id, @RequestBody List<IstoricPersoana> istoricPersoana) throws IOException {
         return ResponseEntity.ok(persoanaService.adaugaIstoricPersoana(id,istoricPersoana));
     }
 

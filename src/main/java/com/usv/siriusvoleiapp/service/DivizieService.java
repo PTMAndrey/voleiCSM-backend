@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,16 +83,5 @@ public class DivizieService {
                         .logo(azureBlobAdapter.getFileURL(club.getLogo()))
                         .build())
                 .collect(Collectors.toList());
-    }
-
-    public Divizie adaugarePersoanaLaDivizie(Long idDivizie, Long idPersoana){
-        Divizie divizie=divizieRepository.findById(idDivizie).orElseThrow(()->{
-            throw new CrudOperationException("Divizia nu exista");
-        });
-
-        Persoana persoana=persoanaRepository.findById(idPersoana).orElseThrow(()->{
-            throw new CrudOperationException("Persoana nu exista");
-        });
-        return divizie;
     }
 }

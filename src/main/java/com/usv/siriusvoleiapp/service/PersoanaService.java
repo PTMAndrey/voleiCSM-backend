@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +43,7 @@ public class PersoanaService {
 
         iterblePersoana.forEach(pers->
                 persoane.add(Persoana.builder()
+                                .id(pers.getId())
                                 .imagine(azureBlobAdapter.getFileURL(pers.getImagine()))
                                 .nume(pers.getNume())
                                 .prenume(pers.getPrenume())
@@ -75,7 +77,7 @@ public class PersoanaService {
         return persoana;
     }
 
-    public Persoana updatePersoana(Long id, PersoanaDto persoanaDto, MultipartFile file) throws IOException {
+    public Persoana updatePersoana(UUID id, PersoanaDto persoanaDto, MultipartFile file) throws IOException {
         Persoana persoana=persoanaRepository.findById(id).orElseThrow(()->{
             throw new CrudOperationException("Persoana nu exista");
         });
@@ -100,7 +102,7 @@ public class PersoanaService {
         return persoana;
     }
 
-    public void deletePersoana(Long id){
+    public void deletePersoana(UUID id){
         Persoana persoana=persoanaRepository.findById(id).orElseThrow(()->{
             throw new CrudOperationException("Persoana nu exista");
         });
@@ -109,7 +111,7 @@ public class PersoanaService {
         persoanaRepository.delete(persoana);
     }
 
-    public Persoana adaugaIstoricPersoana(Long idPersoana, List<IstoricPersoana> istoricPersoana){
+    public Persoana adaugaIstoricPersoana(UUID idPersoana, List<IstoricPersoana> istoricPersoana){
         Persoana persoana=persoanaRepository.findById(idPersoana).orElseThrow(()->{
             throw new CrudOperationException("Persoana nu exista");
         });
