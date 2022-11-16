@@ -32,7 +32,7 @@ public class Persoana implements Serializable {
     @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)
     private String dataNasterii;
 
-    private String inalitime;
+    private String inaltime;
 
     private String nationalitate;
 
@@ -52,7 +52,7 @@ public class Persoana implements Serializable {
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
     )
-//    @JoinColumn(name="idPersoana", referencedColumnName = "idPersoana")
+    @JoinColumn(name="id", referencedColumnName = "id")
     private List<IstoricPersoana> istoricPosturi = new ArrayList<>();
 
 }

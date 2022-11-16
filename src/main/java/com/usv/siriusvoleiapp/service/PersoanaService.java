@@ -21,19 +21,17 @@ import java.util.stream.Collectors;
 @Service
 public class PersoanaService {
     @Autowired
-    private AzureBlobService azureBlobAdapter;
+    private final AzureBlobService azureBlobAdapter;
 
     private final PersoanaRepository persoanaRepository;
     public final DivizieRepository divizieRepository;
     public final IstoricPersoanaRepository istoricPersoanaRepository;
 
-    private final DivizieService divizieService;
-
-    public PersoanaService(PersoanaRepository persoanaRepository, DivizieRepository divizieRepository, IstoricPersoanaRepository istoricPersoanaRepository, DivizieService divizieService) {
+    public PersoanaService(AzureBlobService azureBlobAdapter, PersoanaRepository persoanaRepository, DivizieRepository divizieRepository, IstoricPersoanaRepository istoricPersoanaRepository) {
+        this.azureBlobAdapter = azureBlobAdapter;
         this.persoanaRepository = persoanaRepository;
         this.divizieRepository = divizieRepository;
         this.istoricPersoanaRepository = istoricPersoanaRepository;
-        this.divizieService = divizieService;
     }
 
     @EntityGraph(value = "topic.all")
@@ -48,7 +46,7 @@ public class PersoanaService {
                                 .nume(pers.getNume())
                                 .prenume(pers.getPrenume())
                                 .dataNasterii(pers.getDataNasterii())
-                                .inalitime(pers.getInalitime())
+                                .inaltime(pers.getInaltime())
                                 .nationalitate(pers.getNationalitate())
                                 .personal(pers.getPersonal())
                                 .post(pers.getPost())
@@ -66,7 +64,7 @@ public class PersoanaService {
                 .nume(persoanaDto.getNume())
                 .prenume(persoanaDto.getPrenume())
                 .dataNasterii(persoanaDto.getDataNasterii())
-                .inalitime(persoanaDto.getInalitime())
+                .inaltime(persoanaDto.getInaltime())
                 .nationalitate(persoanaDto.getNationalitate())
                 .personal(persoanaDto.getPersonal())
                 .post(persoanaDto.getPost())
@@ -92,7 +90,7 @@ public class PersoanaService {
         persoana.setNume(persoanaDto.getNume());
         persoana.setPrenume(persoanaDto.getPrenume());
         persoana.setDataNasterii(persoanaDto.getDataNasterii());
-        persoana.setInalitime(persoanaDto.getInalitime());
+        persoana.setInaltime(persoanaDto.getInaltime());
         persoana.setNationalitate(persoanaDto.getNationalitate());
         persoana.setPersonal(persoanaDto.getPersonal());
         persoana.setPost(persoanaDto.getPost());

@@ -157,7 +157,7 @@ public class ClubSportivService {
                         .nume(pers.getNume())
                         .prenume(pers.getPrenume())
                         .dataNasterii(pers.getDataNasterii())
-                        .inalitime(pers.getInalitime())
+                        .inaltime(pers.getInaltime())
                         .nationalitate(pers.getNationalitate())
                         .post(pers.getPost())
                         .descriere(pers.getDescriere())
