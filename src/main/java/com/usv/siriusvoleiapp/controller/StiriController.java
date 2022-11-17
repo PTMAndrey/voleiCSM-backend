@@ -29,6 +29,11 @@ public class StiriController {
         return ResponseEntity.ok(stiriService.getStiri(status));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Stiri> getStireDupaId(@PathVariable UUID id){
+        return ResponseEntity.ok(stiriService.getStireDupaId(id));
+    }
+
     @PostMapping
     public ResponseEntity<Stiri> addStire(@RequestParam("file") List<MultipartFile> file, @ModelAttribute StiriDto stiriDto) throws IOException {
         return ResponseEntity.ok(stiriService.addStire(file,stiriDto));
