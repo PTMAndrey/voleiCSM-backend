@@ -1,6 +1,7 @@
 package com.usv.siriusvoleiapp.service;
 
 import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusStire;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumTipStire;
 import com.usv.siriusvoleiapp.dto.StiriDto;
 import com.usv.siriusvoleiapp.entity.Stiri;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
@@ -10,7 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +29,7 @@ public class StiriService {
     }
 
 
-    public List<Stiri> getStiri(String statusCerut){
+    public List<Stiri> getStiri(EnumStatusStire statusCerut){
         Iterable<Stiri> iterableStiri=stiriRepository.findAll();
         List<Stiri> stiri= new ArrayList<>();
 
@@ -42,19 +46,129 @@ public class StiriService {
                                                         azureBlobAdapter.getFileURL(img)+" "
                                                 ).collect(Collectors.toList()):null
                                 )
+                                .videoclipuri(null)
                         .build()));
 
-        if(statusCerut.equals("TOATE"))
+        if(statusCerut.toString().equals("TOATE"))
             return stiri;
         else
-            return stiri.stream().filter(stire->stire.getStatus().toString().equals(statusCerut)).collect(Collectors.toList());
+            return stiri.stream().filter(stire->stire.getStatus().equals(statusCerut)).collect(Collectors.toList());
     }
 
     public Stiri getStireDupaId(UUID idStire){
 
-        return stiriRepository.findById(idStire).orElseThrow(()->{
+        Stiri stire=stiriRepository.findById(idStire).orElseThrow(()->{
             throw new CrudOperationException("Stirea nu exista");
         });
+
+        stire.setImaginiURL(stire.getImagini()!=null?
+                Arrays.stream(stire.getImagini().split(", ")).map(img->
+                        azureBlobAdapter.getFileURL(img)+" "
+                ).collect(Collectors.toList()):null);
+
+        return stire;
+    }
+
+    public List<Stiri> getStiriFiltrate(EnumStatusStire statusCerut, EnumTipStire tipStire, String numarZile, String perioadaSpecifica, String dataSpecifica) throws ParseException {
+
+        Iterable<Stiri> iterableStiri=stiriRepository.findAll();
+        List<Stiri> stiri= new ArrayList<>();
+
+        String[] perioada= null;
+        long interval = 0;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date currentDate=sdf.parse(formatter.format(new Date()));
+
+        if(numarZile.length()!=0 && dataSpecifica.length()!=0 || numarZile.length()!=0 && perioadaSpecifica.length()!=0 || perioadaSpecifica.length()!=0 && dataSpecifica.length()!=0)
+            throw new CrudOperationException("Este posibil un singur filtru");
+
+        if(perioadaSpecifica.length()!=0){
+            perioada=perioadaSpecifica.split(" ");
+            interval=TimeUnit.DAYS.convert(Math.abs(sdf.parse(perioada[0]).getTime() - sdf.parse(perioada[1]).getTime()), TimeUnit.MILLISECONDS);
+        }
+
+        for(Stiri stire: iterableStiri){
+            if(numarZile.length()!=0 && TimeUnit.DAYS.convert(Math.abs(currentDate.getTime() - sdf.parse(stire.getDataPublicarii()).getTime()), TimeUnit.MILLISECONDS) <= Integer.parseInt(numarZile))
+            {
+                stiri.add(Stiri.builder()
+                        .id(stire.getId())
+                        .titlu(stire.getTitlu())
+                        .descriere(stire.getDescriere())
+                        .status(stire.getStatus())
+                        .dataPublicarii(stire.getDataPublicarii())
+                        .imagini(stire.getImagini())
+                        .imaginiURL(stire.getImagini()!=null?
+                                Arrays.stream(stire.getImagini().split(", ")).map(img->
+                                        azureBlobAdapter.getFileURL(img)+" "
+                                ).collect(Collectors.toList()):null
+                        )
+                        .build());
+            }
+            if(perioadaSpecifica.length()!=0 && TimeUnit.DAYS.convert(Math.abs(sdf.parse(stire.getDataPublicarii()).getTime()- sdf.parse(perioada[0]).getTime()), TimeUnit.MILLISECONDS) <= interval)
+            {
+                stiri.add(Stiri.builder()
+                        .id(stire.getId())
+                        .titlu(stire.getTitlu())
+                        .descriere(stire.getDescriere())
+                        .status(stire.getStatus())
+                        .dataPublicarii(stire.getDataPublicarii())
+                        .imagini(stire.getImagini())
+                        .imaginiURL(stire.getImagini()!=null?
+                                Arrays.stream(stire.getImagini().split(", ")).map(img->
+                                        azureBlobAdapter.getFileURL(img)+" "
+                                ).collect(Collectors.toList()):null
+                        )
+                        .build());
+            }
+            if(dataSpecifica.length()!=0 && stire.getDataPublicarii().equals(dataSpecifica)){
+                stiri.add(Stiri.builder()
+                        .id(stire.getId())
+                        .titlu(stire.getTitlu())
+                        .descriere(stire.getDescriere())
+                        .status(stire.getStatus())
+                        .dataPublicarii(stire.getDataPublicarii())
+                        .imagini(stire.getImagini())
+                        .imaginiURL(stire.getImagini()!=null?
+                                Arrays.stream(stire.getImagini().split(", ")).map(img->
+                                        azureBlobAdapter.getFileURL(img)+" "
+                                ).collect(Collectors.toList()):null
+                        )
+                        .build());
+            }
+
+            if(numarZile.length()==0 && perioadaSpecifica.length()==0 && dataSpecifica.length()==0)
+            {
+                stiri.add(Stiri.builder()
+                        .id(stire.getId())
+                        .titlu(stire.getTitlu())
+                        .descriere(stire.getDescriere())
+                        .status(stire.getStatus())
+                        .dataPublicarii(stire.getDataPublicarii())
+                        .imagini(stire.getImagini())
+                        .imaginiURL(stire.getImagini()!=null?
+                                Arrays.stream(stire.getImagini().split(", ")).map(img->
+                                        azureBlobAdapter.getFileURL(img)+" "
+                                ).collect(Collectors.toList()):null
+                        )
+                        .build());
+            }
+        }
+
+
+        if(tipStire.toString().equals("IMAGINE"))
+            stiri=stiri.stream().filter(stire->stire.getVideoclipuri()==null).collect(Collectors.toList());
+        else if(tipStire.toString().equals("VIDEO"))
+            stiri=stiri.stream().filter(stire->stire.getImagini()==null).collect(Collectors.toList());
+        else if(tipStire.toString().equals("TEXT"))
+            stiri=stiri.stream().filter(stire->stire.getImagini()==null && stire.getImagini()==null).collect(Collectors.toList());
+
+
+        if(statusCerut.toString().equals("TOATE"))
+            return stiri;
+        else
+            return stiri.stream().filter(stire->stire.getStatus().equals(statusCerut)).collect(Collectors.toList());
     }
 
     public Stiri addStire (List<MultipartFile> multipartFiles, StiriDto stiriDto) throws IOException {
@@ -68,6 +182,7 @@ public class StiriService {
                 .status(stiriDto.getStatus())
                 .dataPublicarii(stiriDto.getDataPublicarii())
                 .imagini(numeImaginiStiri)
+                .videoclipuri(null)
                 .build();
         stiriRepository.save(stiri);
         return  stiri;
@@ -94,6 +209,7 @@ public class StiriService {
         stire.setStatus(stiriDto.getStatus());
         stire.setDataPublicarii(stiriDto.getDataPublicarii());
         stire.setImagini(numeImaginiStiri);
+        stire.setVideoclipuri(null);
 
         stiriRepository.save(stire);
         return stire;
