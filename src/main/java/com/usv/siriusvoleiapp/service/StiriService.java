@@ -7,6 +7,7 @@ import com.usv.siriusvoleiapp.entity.Stiri;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
 import com.usv.siriusvoleiapp.repository.StiriRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +29,24 @@ public class StiriService {
         this.stiriRepository = stiriRepository;
     }
 
+    @Scheduled(cron = "*/10 * * * * *")
+    public void postareAutomataStiri() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        System.out.println(formatter.format(new Date()));
+
+        Iterable<Stiri> iterableStiri=stiriRepository.findAll();
+
+        for(Stiri stire: iterableStiri){
+            if(stire.getDataPublicarii().equals(formatter.format(new Date()))&&stire.getStatus().toString().equals("PROGRAMAT"))
+            {
+                stire.setStatus(EnumStatusStire.PUBLICAT);
+                stiriRepository.save(stire);
+            }
+        }
+
+
+    }
 
     public List<Stiri> getStiri(EnumStatusStire statusCerut){
         Iterable<Stiri> iterableStiri=stiriRepository.findAll();
