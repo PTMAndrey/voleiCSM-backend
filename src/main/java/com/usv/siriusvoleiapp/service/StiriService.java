@@ -29,7 +29,7 @@ public class StiriService {
         this.stiriRepository = stiriRepository;
     }
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "*/60 * * * * *")
     public void postareAutomataStiri() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH);
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
