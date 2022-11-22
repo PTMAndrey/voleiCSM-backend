@@ -4,6 +4,7 @@ import com.usv.siriusvoleiapp.dto.ClubSportivDto;
 import com.usv.siriusvoleiapp.dto.PersoanaDto;
 import com.usv.siriusvoleiapp.entity.IstoricPersoana;
 import com.usv.siriusvoleiapp.entity.Persoana;
+import com.usv.siriusvoleiapp.entity.RealizariPersonale;
 import com.usv.siriusvoleiapp.service.DivizieService;
 import com.usv.siriusvoleiapp.service.PersoanaService;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,11 @@ public class PersoanaController {
     @PostMapping("/{id}/istoricPersoana")
     public ResponseEntity<Persoana> adaugaIstoricPersoana(@PathVariable UUID id, @RequestBody List<IstoricPersoana> istoricPersoana) throws IOException {
         return ResponseEntity.ok(persoanaService.adaugaIstoricPersoana(id,istoricPersoana));
+    }
+
+    @PostMapping("/{id}/realizariPersonale")
+    public ResponseEntity<Persoana> adaugaRealizariPersonale(@PathVariable UUID id, @RequestBody List<RealizariPersonale> realizariPersonale) throws IOException {
+        return ResponseEntity.ok(persoanaService.adaugaRealizariPersonale(id,realizariPersonale));
     }
 
 

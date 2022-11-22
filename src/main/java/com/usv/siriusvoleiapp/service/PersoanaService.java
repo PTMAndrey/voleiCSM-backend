@@ -3,6 +3,7 @@ package com.usv.siriusvoleiapp.service;
 import com.usv.siriusvoleiapp.dto.PersoanaDto;
 import com.usv.siriusvoleiapp.entity.IstoricPersoana;
 import com.usv.siriusvoleiapp.entity.Persoana;
+import com.usv.siriusvoleiapp.entity.RealizariPersonale;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
 import com.usv.siriusvoleiapp.repository.DivizieRepository;
 import com.usv.siriusvoleiapp.repository.IstoricPersoanaRepository;
@@ -117,8 +118,32 @@ public class PersoanaService {
         if(persoana.getIstoricPosturi()==null)
             persoana.setIstoricPosturi(new ArrayList<>());
 
+        for (IstoricPersoana ist:istoricPersoana) {
+            ist.setId(idPersoana);
+        }
+//        persoana.setIstoricPosturi(new ArrayList<>(istoricPersoana));
+
         istoricPersoana.stream().map(pers->
-                persoana.getIstoricPosturi().add(pers))
+                        persoana.getIstoricPosturi().add(pers))
+                .collect(Collectors.toSet());
+        persoanaRepository.save(persoana);
+        return persoana;
+    }
+
+    public Persoana adaugaRealizariPersonale(UUID idPersoana, List<RealizariPersonale> realizariPersonale){
+        Persoana persoana=persoanaRepository.findById(idPersoana).orElseThrow(()->{
+            throw new CrudOperationException("Persoana nu exista");
+        });
+
+        if(persoana.getRealizariPersonale()==null)
+            persoana.setRealizariPersonale(new ArrayList<>());
+
+        for (RealizariPersonale realizari:realizariPersonale) {
+            realizari.setId(idPersoana);
+        }
+
+        realizariPersonale.stream().map(pers->
+                        persoana.getRealizariPersonale().add(pers))
                 .collect(Collectors.toSet());
 
         persoanaRepository.save(persoana);

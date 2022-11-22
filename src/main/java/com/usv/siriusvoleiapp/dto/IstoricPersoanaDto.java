@@ -1,6 +1,7 @@
 package com.usv.siriusvoleiapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumPost;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Builder
 public class IstoricPersoanaDto {
 
-    private String post;
+    private EnumPost post;
 
     private String dataInceput;
 

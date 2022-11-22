@@ -40,18 +40,11 @@ public class IstoricPersoaneService {
     }
 
     public List<IstoricPersoana> getIstoricPersoana(UUID idPers){
-        Iterable<IstoricPersoana> iterableIstoricPersoanas=istoricPersoanaRepository.findAll();
-        List<IstoricPersoana> istoricPersoana= new ArrayList<>();
+        Persoana persoana=persoanaRepository.findById(idPers).orElseThrow(()->{
+            throw new CrudOperationException("Persoana nu exista");
+        });
 
-        iterableIstoricPersoanas.forEach(istPers->
-                istoricPersoana.add(IstoricPersoana.builder()
-                        .idIstoricPersoana(istPers.getIdIstoricPersoana())
-                        .id(istPers.getId())
-                        .post(istPers.getPost())
-                        .dataInceput(istPers.getDataInceput())
-                        .dataFinal(istPers.getDataFinal())
-                        .build()));
-        return istoricPersoana.stream().filter(istPers->istPers.getId().equals(idPers)).collect(Collectors.toList());
+        return persoana.getIstoricPosturi();
     }
 
 

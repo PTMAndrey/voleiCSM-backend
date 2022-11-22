@@ -37,11 +37,13 @@ public class StiriService {
 
         Iterable<Stiri> iterableStiri=stiriRepository.findAll();
 
-        for(Stiri stire: iterableStiri){
-            if(stire.getDataPublicarii().equals(formatter.format(new Date()))&&stire.getStatus().toString().equals("PROGRAMAT"))
-            {
-                stire.setStatus(EnumStatusStire.PUBLICAT);
-                stiriRepository.save(stire);
+        if(iterableStiri!=null){
+            for(Stiri stire: iterableStiri){
+                if(stire.getDataPublicarii().equals(formatter.format(new Date()))&&stire.getStatus().toString().equals("PROGRAMAT"))
+                {
+                    stire.setStatus(EnumStatusStire.PUBLICAT);
+                    stiriRepository.save(stire);
+                }
             }
         }
 

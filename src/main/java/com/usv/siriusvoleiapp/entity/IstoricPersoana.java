@@ -1,6 +1,7 @@
 package com.usv.siriusvoleiapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumPost;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ public class IstoricPersoana {
 
     private UUID id;
 
-    private String post;
+    private EnumPost post;
 
     @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)
     private String dataInceput;

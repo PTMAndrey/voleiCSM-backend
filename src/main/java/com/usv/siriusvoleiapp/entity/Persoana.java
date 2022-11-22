@@ -49,10 +49,18 @@ public class Persoana implements Serializable {
 
     @OneToMany(
             targetEntity = IstoricPersoana.class,
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
     @JoinColumn(name="id", referencedColumnName = "id")
     private List<IstoricPersoana> istoricPosturi = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = RealizariPersonale.class,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name="id", referencedColumnName = "id")
+    private List<RealizariPersonale> realizariPersonale = new ArrayList<>();
 
 }
