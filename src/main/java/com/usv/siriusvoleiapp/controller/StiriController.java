@@ -40,7 +40,7 @@ public class StiriController {
     }
 
     @PostMapping
-    public ResponseEntity<Stiri> addStire(@RequestParam("file") List<MultipartFile> file, @ModelAttribute StiriDto stiriDto) throws IOException {
+    public ResponseEntity<Stiri> addStire(@RequestParam("file") List<MultipartFile> file, @ModelAttribute StiriDto stiriDto) throws IOException, ParseException {
         return ResponseEntity.ok(stiriService.addStire(file,stiriDto));
     }
 

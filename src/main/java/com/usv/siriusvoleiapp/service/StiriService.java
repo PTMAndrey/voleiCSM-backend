@@ -192,11 +192,19 @@ public class StiriService {
             return stiri.stream().filter(stire->stire.getStatus().equals(statusCerut)).collect(Collectors.toList());
     }
 
-    public Stiri addStire (List<MultipartFile> multipartFiles, StiriDto stiriDto) throws IOException {
+    public Stiri addStire (List<MultipartFile> multipartFiles, StiriDto stiriDto) throws IOException, ParseException {
         String numeImaginiStiri = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date currentDate=sdf.parse(formatter.format(new Date()));
+
 
         if(multipartFiles.get(0).getSize()!=0)
             numeImaginiStiri=azureBlobAdapter.uploadMultipleFile(multipartFiles);
+
+        if(sdf.parse(stiriDto.getDataPublicarii()).getTime() < currentDate.getTime() && stiriDto.getStatus().toString().equals("PROGRAMAT"))
+            throw new CrudOperationException("Nu se poate programa o stire in trecut");
+
         Stiri stiri= Stiri.builder()
                 .titlu(stiriDto.getTitlu())
                 .descriere(stiriDto.getDescriere())

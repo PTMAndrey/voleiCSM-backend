@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,8 +24,6 @@ public class Stiri {
     private String titlu;
 
     @NotBlank(message = "Name is mandatory")
-//    @Column(length = 2000)
-//    @Size(max=50)
     @Column(length=10485760)
     private String descriere;
 
@@ -38,6 +35,7 @@ public class Stiri {
     @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)
     private String dataPublicarii;
 
+    @Column(length=10485760)
     private String imagini;
 
     @ElementCollection(targetClass=String.class)
