@@ -179,11 +179,11 @@ public class StiriService {
 
 
         if(tipStire.toString().equals("IMAGINE"))
-            stiri=stiri.stream().filter(stire->stire.getVideoclipuri()==null).collect(Collectors.toList());
+            stiri=stiri.stream().filter(stire->stire.getVideoclipuri()==null && stire.getImagini()!=null).collect(Collectors.toList());
         else if(tipStire.toString().equals("VIDEO"))
-            stiri=stiri.stream().filter(stire->stire.getImagini()==null).collect(Collectors.toList());
+            stiri=stiri.stream().filter(stire->stire.getImagini()==null && stire.getVideoclipuri()!=null).collect(Collectors.toList());
         else if(tipStire.toString().equals("TEXT"))
-            stiri=stiri.stream().filter(stire->stire.getImagini()==null && stire.getImagini()==null).collect(Collectors.toList());
+            stiri=stiri.stream().filter(stire->stire.getImagini()==null && stire.getVideoclipuri()==null).collect(Collectors.toList());
 
 
         if(statusCerut.toString().equals("TOATE"))
