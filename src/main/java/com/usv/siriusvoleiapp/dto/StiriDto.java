@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class StiriDto {
     private String titlu;
 
+    private String autor;
+
     private String descriere;
 
     private EnumStatusStire status;

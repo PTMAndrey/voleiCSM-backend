@@ -58,6 +58,7 @@ public class StiriService {
                 stiri.add(Stiri.builder()
                                 .id(stire.getId())
                                 .titlu(stire.getTitlu())
+                                .autor(stire.getAutor())
                                 .descriere(stire.getDescriere())
                                 .status(stire.getStatus())
                                 .dataPublicarii(stire.getDataPublicarii())
@@ -116,6 +117,7 @@ public class StiriService {
                 stiri.add(Stiri.builder()
                         .id(stire.getId())
                         .titlu(stire.getTitlu())
+                        .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
@@ -132,6 +134,7 @@ public class StiriService {
                 stiri.add(Stiri.builder()
                         .id(stire.getId())
                         .titlu(stire.getTitlu())
+                        .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
@@ -147,6 +150,7 @@ public class StiriService {
                 stiri.add(Stiri.builder()
                         .id(stire.getId())
                         .titlu(stire.getTitlu())
+                        .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
@@ -164,6 +168,7 @@ public class StiriService {
                 stiri.add(Stiri.builder()
                         .id(stire.getId())
                         .titlu(stire.getTitlu())
+                        .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
@@ -207,6 +212,7 @@ public class StiriService {
 
         Stiri stiri= Stiri.builder()
                 .titlu(stiriDto.getTitlu())
+                .autor(stiriDto.getAutor())
                 .descriere(stiriDto.getDescriere())
                 .status(stiriDto.getStatus())
                 .dataPublicarii(stiriDto.getDataPublicarii())
@@ -234,6 +240,7 @@ public class StiriService {
             numeImaginiStiri=azureBlobAdapter.uploadMultipleFile(multipartFiles);
 
         stire.setTitlu(stiriDto.getTitlu());
+        stire.setAutor(stiriDto.getAutor());
         stire.setDescriere(stiriDto.getDescriere());
         stire.setStatus(stiriDto.getStatus());
         stire.setDataPublicarii(stiriDto.getDataPublicarii());

@@ -24,6 +24,9 @@ public class Stiri {
     private String titlu;
 
     @NotBlank(message = "Name is mandatory")
+    private String autor;
+
+    @NotBlank(message = "Name is mandatory")
     @Column(length=10485760)
     private String descriere;
 
