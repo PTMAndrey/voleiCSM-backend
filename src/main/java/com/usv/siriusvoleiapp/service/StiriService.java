@@ -100,6 +100,7 @@ public class StiriService {
         long interval = 0;
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        SimpleDateFormat year = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date currentDate=sdf.parse(formatter.format(new Date()));
 
@@ -129,7 +130,7 @@ public class StiriService {
                         )
                         .build());
             }
-            if(perioadaSpecifica.length()!=0 && TimeUnit.DAYS.convert(Math.abs(sdf.parse(stire.getDataPublicarii()).getTime()- sdf.parse(perioada[0]).getTime()), TimeUnit.MILLISECONDS) <= interval)
+            if(perioadaSpecifica.length()!=0 && TimeUnit.DAYS.convert(Math.abs(sdf.parse(stire.getDataPublicarii()).getTime()- sdf.parse(perioada[0]).getTime()), TimeUnit.MILLISECONDS) <= interval && stire.getDataPublicarii().split(" ")[0].split("-")[2].equals(perioada[0].split("-")[2]))
             {
                 stiri.add(Stiri.builder()
                         .id(stire.getId())
