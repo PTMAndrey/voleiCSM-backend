@@ -112,7 +112,7 @@ public class StiriService {
         }
 
         for(Stiri stire: iterableStiri){
-            if(numarZile.length()!=0 && TimeUnit.DAYS.convert(Math.abs(currentDate.getTime() - sdf.parse(stire.getDataPublicarii()).getTime()), TimeUnit.MILLISECONDS) <= Integer.parseInt(numarZile))
+            if(numarZile.length()!=0 && TimeUnit.DAYS.convert(Math.abs(currentDate.getTime() - sdf.parse(stire.getDataPublicarii()).getTime()), TimeUnit.MILLISECONDS) <= Integer.parseInt(numarZile) && sdf.parse(stire.getDataPublicarii()).getTime() < currentDate.getTime())
             {
                 stiri.add(Stiri.builder()
                         .id(stire.getId())
