@@ -147,7 +147,7 @@ public class StiriService {
                         )
                         .build());
             }
-            if(dataSpecifica.length()!=0 && stire.getDataPublicarii().equals(dataSpecifica)){
+            if(dataSpecifica.length()!=0 && stire.getDataPublicarii().split(" ")[0].equals(dataSpecifica)){
                 stiri.add(Stiri.builder()
                         .id(stire.getId())
                         .titlu(stire.getTitlu())
