@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -35,8 +36,17 @@ public class StiriController {
     }
 
     @GetMapping("/filtru")
-    public ResponseEntity<List<Stiri>> getStiri(@RequestParam("status") EnumStatusStire status, @RequestParam("tipStire") EnumTipStire tipStire, @RequestParam("numarZile") String numarZile, @RequestParam("perioadaSpecifica") String perioadaSpecifica, @RequestParam("dataSpecifica") String dataSpecifica) throws ParseException {
-        return ResponseEntity.ok(stiriService.getStiriFiltrate(status, tipStire, numarZile, perioadaSpecifica, dataSpecifica));
+    public ResponseEntity<List<Stiri>> getStiri(@RequestParam("status") EnumStatusStire status, @RequestParam("tipStire") EnumTipStire tipStire, @RequestParam("numarZile") Optional<String> numarZile, @RequestParam("perioadaSpecifica") Optional<String> perioadaSpecifica, @RequestParam("dataSpecifica") Optional<String> dataSpecifica) throws ParseException {
+        if(numarZile.isPresent())
+            return ResponseEntity.ok(stiriService.getStiriFiltrate(status, tipStire, numarZile.get(), "", ""));
+        else
+            if(perioadaSpecifica.isPresent())
+                return ResponseEntity.ok(stiriService.getStiriFiltrate(status, tipStire, "", perioadaSpecifica.get(), ""));
+                else
+                    if(dataSpecifica.isPresent())
+                        return ResponseEntity.ok(stiriService.getStiriFiltrate(status, tipStire, "", "", dataSpecifica.get()));
+                    else
+                        return ResponseEntity.ok(stiriService.getStiriFiltrate(status, tipStire, "", "", ""));
     }
 
     @PostMapping
