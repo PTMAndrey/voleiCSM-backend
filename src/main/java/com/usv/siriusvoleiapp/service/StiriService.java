@@ -46,8 +46,6 @@ public class StiriService {
                 }
             }
         }
-
-
     }
 
     public List<Stiri> getStiri(EnumStatusStire statusCerut){
@@ -60,6 +58,7 @@ public class StiriService {
                                 .titlu(stire.getTitlu())
                                 .autor(stire.getAutor())
                                 .descriere(stire.getDescriere())
+                                .hastag(stire.getHastag())
                                 .status(stire.getStatus())
                                 .dataPublicarii(stire.getDataPublicarii())
                                 .imagini(stire.getImagini())
@@ -120,6 +119,7 @@ public class StiriService {
                         .titlu(stire.getTitlu())
                         .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
+                        .hastag(stire.getHastag())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
                         .imagini(stire.getImagini())
@@ -137,6 +137,7 @@ public class StiriService {
                         .titlu(stire.getTitlu())
                         .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
+                        .hastag(stire.getHastag())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
                         .imagini(stire.getImagini())
@@ -153,6 +154,7 @@ public class StiriService {
                         .titlu(stire.getTitlu())
                         .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
+                        .hastag(stire.getHastag())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
                         .imagini(stire.getImagini())
@@ -171,6 +173,7 @@ public class StiriService {
                         .titlu(stire.getTitlu())
                         .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
+                        .hastag(stire.getHastag())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
                         .imagini(stire.getImagini())
@@ -199,6 +202,8 @@ public class StiriService {
     }
 
     public Stiri addStire (List<MultipartFile> multipartFiles, StiriDto stiriDto) throws IOException, ParseException {
+        System.out.println(multipartFiles);
+        System.out.println(stiriDto);
         String numeImaginiStiri = null;
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -215,6 +220,7 @@ public class StiriService {
                 .titlu(stiriDto.getTitlu())
                 .autor(stiriDto.getAutor())
                 .descriere(stiriDto.getDescriere())
+                .hastag(stiriDto.getHastag())
                 .status(stiriDto.getStatus())
                 .dataPublicarii(stiriDto.getDataPublicarii())
                 .imagini(numeImaginiStiri)
@@ -223,6 +229,7 @@ public class StiriService {
         stiriRepository.save(stiri);
         return  stiri;
     }
+
 
     public Stiri updateStire(UUID id, StiriDto stiriDto, List<MultipartFile> multipartFiles) throws IOException {
         Stiri stire=stiriRepository.findById(id).orElseThrow(()->{
@@ -243,6 +250,7 @@ public class StiriService {
         stire.setTitlu(stiriDto.getTitlu());
         stire.setAutor(stiriDto.getAutor());
         stire.setDescriere(stiriDto.getDescriere());
+        stire.setHastag(stiriDto.getHastag());
         stire.setStatus(stiriDto.getStatus());
         stire.setDataPublicarii(stiriDto.getDataPublicarii());
         stire.setImagini(numeImaginiStiri);

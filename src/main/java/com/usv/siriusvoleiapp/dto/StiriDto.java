@@ -18,6 +18,8 @@ public class StiriDto {
 
     private String descriere;
 
+    private String hastag;
+
     private EnumStatusStire status;
 
     private String dataPublicarii;

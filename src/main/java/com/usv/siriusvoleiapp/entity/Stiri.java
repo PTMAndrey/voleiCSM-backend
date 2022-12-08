@@ -30,6 +30,8 @@ public class Stiri {
     @Column(length=10485760)
     private String descriere;
 
+    private String hastag;
+
     @Enumerated
     @NotBlank(message = "Name is mandatory")
     private EnumStatusStire status;
