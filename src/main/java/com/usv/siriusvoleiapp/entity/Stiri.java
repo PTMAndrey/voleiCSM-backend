@@ -30,7 +30,7 @@ public class Stiri {
     @Column(length=10485760)
     private String descriere;
 
-    private String hastag;
+    private String hashtag;
 
     @Enumerated
     @NotBlank(message = "Name is mandatory")

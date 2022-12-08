@@ -18,7 +18,7 @@ public class StiriDto {
 
     private String descriere;
 
-    private String hastag;
+    private String hashtag;
 
     private EnumStatusStire status;
 

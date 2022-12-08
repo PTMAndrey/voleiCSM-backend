@@ -58,7 +58,7 @@ public class StiriService {
                                 .titlu(stire.getTitlu())
                                 .autor(stire.getAutor())
                                 .descriere(stire.getDescriere())
-                                .hastag(stire.getHastag())
+                                .hashtag(stire.gethashtag())
                                 .status(stire.getStatus())
                                 .dataPublicarii(stire.getDataPublicarii())
                                 .imagini(stire.getImagini())
@@ -119,7 +119,7 @@ public class StiriService {
                         .titlu(stire.getTitlu())
                         .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
-                        .hastag(stire.getHastag())
+                        .hashtag(stire.gethashtag())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
                         .imagini(stire.getImagini())
@@ -137,7 +137,7 @@ public class StiriService {
                         .titlu(stire.getTitlu())
                         .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
-                        .hastag(stire.getHastag())
+                        .hashtag(stire.gethashtag())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
                         .imagini(stire.getImagini())
@@ -154,7 +154,7 @@ public class StiriService {
                         .titlu(stire.getTitlu())
                         .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
-                        .hastag(stire.getHastag())
+                        .hashtag(stire.gethashtag())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
                         .imagini(stire.getImagini())
@@ -173,7 +173,7 @@ public class StiriService {
                         .titlu(stire.getTitlu())
                         .autor(stire.getAutor())
                         .descriere(stire.getDescriere())
-                        .hastag(stire.getHastag())
+                        .hashtag(stire.gethashtag())
                         .status(stire.getStatus())
                         .dataPublicarii(stire.getDataPublicarii())
                         .imagini(stire.getImagini())
@@ -220,7 +220,7 @@ public class StiriService {
                 .titlu(stiriDto.getTitlu())
                 .autor(stiriDto.getAutor())
                 .descriere(stiriDto.getDescriere())
-                .hastag(stiriDto.getHastag())
+                .hashtag(stiriDto.gethashtag())
                 .status(stiriDto.getStatus())
                 .dataPublicarii(stiriDto.getDataPublicarii())
                 .imagini(numeImaginiStiri)
@@ -250,7 +250,7 @@ public class StiriService {
         stire.setTitlu(stiriDto.getTitlu());
         stire.setAutor(stiriDto.getAutor());
         stire.setDescriere(stiriDto.getDescriere());
-        stire.setHastag(stiriDto.getHastag());
+        stire.sethashtag(stiriDto.gethashtag());
         stire.setStatus(stiriDto.getStatus());
         stire.setDataPublicarii(stiriDto.getDataPublicarii());
         stire.setImagini(numeImaginiStiri);
