@@ -43,7 +43,7 @@ public class PersoanaService {
         iterblePersoana.forEach(pers->
                 persoane.add(Persoana.builder()
                                 .id(pers.getId())
-                                .imagine(azureBlobAdapter.getFileURL(pers.getImagine()))
+                                .imagine(pers.getImagine().length()!=0?azureBlobAdapter.getFileURL(pers.getImagine()):"")
                                 .nume(pers.getNume())
                                 .prenume(pers.getPrenume())
                                 .dataNasterii(pers.getDataNasterii())
@@ -54,12 +54,15 @@ public class PersoanaService {
                                 .descriere(pers.getDescriere())
                                 .numeDivizie(pers.getNumeDivizie())
                                 .istoricPosturi(pers.getIstoricPosturi())
+                                .realizariPersonale(pers.getRealizariPersonale())
                                 .build()));
         return persoane;
     }
 
     public Persoana addPersoana (MultipartFile file, PersoanaDto persoanaDto) throws IOException {
-        String fileName = azureBlobAdapter.upload(file);
+        String fileName="";
+        if(!file.isEmpty())
+            fileName = azureBlobAdapter.upload(file);
         Persoana persoana=Persoana.builder()
                 .imagine(fileName)
                 .nume(persoanaDto.getNume())
@@ -106,47 +109,8 @@ public class PersoanaService {
             throw new CrudOperationException("Persoana nu exista");
         });
 
-        azureBlobAdapter.deleteBlob(persoana.getImagine());
+        if(persoana.getImagine().length()!=0)
+            azureBlobAdapter.deleteBlob(persoana.getImagine());
         persoanaRepository.delete(persoana);
-    }
-
-    public Persoana adaugaIstoricPersoana(UUID idPersoana, List<IstoricPersoana> istoricPersoana){
-        Persoana persoana=persoanaRepository.findById(idPersoana).orElseThrow(()->{
-            throw new CrudOperationException("Persoana nu exista");
-        });
-
-        if(persoana.getIstoricPosturi()==null)
-            persoana.setIstoricPosturi(new ArrayList<>());
-
-        for (IstoricPersoana ist:istoricPersoana) {
-            ist.setId(idPersoana);
-        }
-//        persoana.setIstoricPosturi(new ArrayList<>(istoricPersoana));
-
-        istoricPersoana.stream().map(pers->
-                        persoana.getIstoricPosturi().add(pers))
-                .collect(Collectors.toSet());
-        persoanaRepository.save(persoana);
-        return persoana;
-    }
-
-    public Persoana adaugaRealizariPersonale(UUID idPersoana, List<RealizariPersonale> realizariPersonale){
-        Persoana persoana=persoanaRepository.findById(idPersoana).orElseThrow(()->{
-            throw new CrudOperationException("Persoana nu exista");
-        });
-
-        if(persoana.getRealizariPersonale()==null)
-            persoana.setRealizariPersonale(new ArrayList<>());
-
-        for (RealizariPersonale realizari:realizariPersonale) {
-            realizari.setId(idPersoana);
-        }
-
-        realizariPersonale.stream().map(pers->
-                        persoana.getRealizariPersonale().add(pers))
-                .collect(Collectors.toSet());
-
-        persoanaRepository.save(persoana);
-        return persoana;
     }
 }
