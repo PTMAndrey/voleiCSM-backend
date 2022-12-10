@@ -59,6 +59,16 @@ public class PersoanaService {
         return persoane;
     }
 
+    public Persoana getPersoanaDupaId(UUID id){
+        Persoana persoana=persoanaRepository.findById(id).orElseThrow(()->{
+            throw new CrudOperationException("Persoana nu exista");
+        });
+
+        persoana.setImagine(persoana.getImagine().length()!=0?azureBlobAdapter.getFileURL(persoana.getImagine()):"");
+
+        return persoana;
+    }
+
     public Persoana addPersoana (MultipartFile file, PersoanaDto persoanaDto) throws IOException {
         String fileName="";
         if(!file.isEmpty())

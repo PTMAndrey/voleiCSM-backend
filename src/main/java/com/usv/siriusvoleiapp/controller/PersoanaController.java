@@ -27,6 +27,11 @@ public class PersoanaController {
         return ResponseEntity.ok(persoanaService.getPersoane());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Persoana> getPersoanaDupaId(@PathVariable UUID id){
+        return ResponseEntity.ok(persoanaService.getPersoanaDupaId(id));
+    }
+
     @PostMapping
     public ResponseEntity<Persoana> addClubSportiv(@RequestParam("file") MultipartFile file, @ModelAttribute PersoanaDto persoanaDto) throws IOException {
         return ResponseEntity.ok(persoanaService.addPersoana(file,persoanaDto));
