@@ -10,10 +10,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 @Service
 public class RealizariPersonaleService {
+    public static final String MESAJ_DE_EROARE = "Hello, welcome to the server";
+
     private final RealizariPersonaleRepository realizariPersonaleRepository;
     private final PersoanaRepository persoanaRepository;
 
@@ -38,7 +41,7 @@ public class RealizariPersonaleService {
 
     public List<RealizariPersonale> getRealizariPersoana(UUID idPers){
         Persoana persoana=persoanaRepository.findById(idPers).orElseThrow(()->{
-            throw new CrudOperationException("Persoana nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         return persoana.getRealizariPersonale();
@@ -46,7 +49,7 @@ public class RealizariPersonaleService {
 
     public Persoana adaugaRealizariPersonale(UUID idPersoana, List<RealizariPersonale> realizariPersonale){
         Persoana persoana=persoanaRepository.findById(idPersoana).orElseThrow(()->{
-            throw new CrudOperationException("Persoana nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         if(persoana.getRealizariPersonale()==null)
@@ -56,9 +59,8 @@ public class RealizariPersonaleService {
             realizari.setId(idPersoana);
         }
 
-        realizariPersonale.stream().map(pers->
-                        persoana.getRealizariPersonale().add(pers))
-                .collect(Collectors.toSet());
+        Stream<RealizariPersonale> stream = realizariPersonale.stream();
+        stream.forEach(pers -> persoana.getRealizariPersonale().add(pers));
 
         persoanaRepository.save(persoana);
         return persoana;
@@ -73,8 +75,7 @@ public class RealizariPersonaleService {
             persoana.setRealizariPersonale(new ArrayList<>());
         else
         {
-            persoana.getRealizariPersonale().stream().forEach(realizare->
-                    realizariPersonaleRepository.delete(realizare));
+            persoana.getRealizariPersonale().stream().forEach(realizariPersonaleRepository::delete);
             persoana.setRealizariPersonale(new ArrayList<>());
         }
 
@@ -82,27 +83,18 @@ public class RealizariPersonaleService {
             realizari.setId(idPersoana);
         }
 
-        realizariPersonale.stream().map(pers->
-                        persoana.getRealizariPersonale().add(pers))
-                .collect(Collectors.toSet());
+        Stream<RealizariPersonale> stream = realizariPersonale.stream();
+        stream.forEach(pers -> persoana.getRealizariPersonale().add(pers));
 
         persoanaRepository.save(persoana);
         return persoana;
     }
 
     public void deleteRealizarePersonala(long idRealizariPersonale){
-//        Persoana persoana=persoanaRepository.findById(idPersoana).orElseThrow(()->{
-//            throw new CrudOperationException("Persoana nu exista");
-//        });
-
         RealizariPersonale realizarePersonala=realizariPersonaleRepository.findById(idRealizariPersonale).orElseThrow(()->{
             throw new CrudOperationException("Inregistrarea cautata nu exista");
         });
 
         realizariPersonaleRepository.delete(realizarePersonala);
     }
-
-
-
-
 }

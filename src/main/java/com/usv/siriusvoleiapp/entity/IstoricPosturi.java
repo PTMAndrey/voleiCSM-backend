@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-public class IstoricPersoana {
+public class IstoricPosturi {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idIstoricPersoana;

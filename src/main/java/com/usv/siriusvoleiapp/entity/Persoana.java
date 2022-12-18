@@ -7,7 +7,6 @@ import com.usv.siriusvoleiapp.declaratieEnum.EnumPost;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-public class Persoana implements Serializable {
+public class Persoana {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -48,12 +47,12 @@ public class Persoana implements Serializable {
     private EnumNumeDivizie numeDivizie;
 
     @OneToMany(
-            targetEntity = IstoricPersoana.class,
+            targetEntity = IstoricPosturi.class,
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
     @JoinColumn(name="id", referencedColumnName = "id")
-    private List<IstoricPersoana> istoricPosturi = new ArrayList<>();
+    private List<IstoricPosturi> istoricPosturi = new ArrayList<>();
 
     @OneToMany(
             targetEntity = RealizariPersonale.class,

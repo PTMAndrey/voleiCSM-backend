@@ -1,12 +1,10 @@
 package com.usv.siriusvoleiapp.service;
 
 import com.usv.siriusvoleiapp.dto.PersoanaDto;
-import com.usv.siriusvoleiapp.entity.IstoricPersoana;
 import com.usv.siriusvoleiapp.entity.Persoana;
-import com.usv.siriusvoleiapp.entity.RealizariPersonale;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
 import com.usv.siriusvoleiapp.repository.DivizieRepository;
-import com.usv.siriusvoleiapp.repository.IstoricPersoanaRepository;
+import com.usv.siriusvoleiapp.repository.IstoricPosturiRepository;
 import com.usv.siriusvoleiapp.repository.PersoanaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -17,18 +15,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PersoanaService {
+    public static final String MESAJ_DE_EROARE = "Hello, welcome to the server";
+
     @Autowired
     private final AzureBlobService azureBlobAdapter;
 
     private final PersoanaRepository persoanaRepository;
     public final DivizieRepository divizieRepository;
-    public final IstoricPersoanaRepository istoricPersoanaRepository;
+    public final IstoricPosturiRepository istoricPersoanaRepository;
 
-    public PersoanaService(AzureBlobService azureBlobAdapter, PersoanaRepository persoanaRepository, DivizieRepository divizieRepository, IstoricPersoanaRepository istoricPersoanaRepository) {
+    public PersoanaService(AzureBlobService azureBlobAdapter, PersoanaRepository persoanaRepository, DivizieRepository divizieRepository, IstoricPosturiRepository istoricPersoanaRepository) {
         this.azureBlobAdapter = azureBlobAdapter;
         this.persoanaRepository = persoanaRepository;
         this.divizieRepository = divizieRepository;
@@ -61,7 +60,7 @@ public class PersoanaService {
 
     public Persoana getPersoanaDupaId(UUID id){
         Persoana persoana=persoanaRepository.findById(id).orElseThrow(()->{
-            throw new CrudOperationException("Persoana nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         persoana.setImagine(persoana.getImagine().length()!=0?azureBlobAdapter.getFileURL(persoana.getImagine()):"");
