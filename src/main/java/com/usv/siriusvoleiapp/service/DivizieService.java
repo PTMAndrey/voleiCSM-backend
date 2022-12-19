@@ -4,29 +4,25 @@ import com.usv.siriusvoleiapp.dto.ClubSportivDto;
 import com.usv.siriusvoleiapp.dto.DivizieDto;
 import com.usv.siriusvoleiapp.entity.ClubSportiv;
 import com.usv.siriusvoleiapp.entity.Divizie;
-import com.usv.siriusvoleiapp.entity.Persoana;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
 import com.usv.siriusvoleiapp.repository.DivizieRepository;
-import com.usv.siriusvoleiapp.repository.PersoanaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class DivizieService {
+    public static final String MESAJ_DE_EROARE = "Hello, welcome to the server";
+
     @Autowired
     private AzureBlobService azureBlobAdapter;
 
     private final DivizieRepository divizieRepository;
-    private final PersoanaRepository persoanaRepository;
 
-    public DivizieService(DivizieRepository divizieRepository, PersoanaRepository persoanaRepository) {
+    public DivizieService(DivizieRepository divizieRepository) {
         this.divizieRepository = divizieRepository;
-        this.persoanaRepository = persoanaRepository;
     }
 
     public List<DivizieDto> getDivizii(){
@@ -34,6 +30,7 @@ public class DivizieService {
         List<DivizieDto> divizii=new ArrayList<>();
 
         iterableDivizii.forEach(divizie->
+
                 divizii.add(DivizieDto.builder()
                                 .idDivizie(divizie.getIdDivizie())
                                 .denumireDivizie(divizie.getDenumireDivizie())
@@ -52,7 +49,7 @@ public class DivizieService {
 
     public DivizieDto updateDivizie(Long id, DivizieDto divizieDto){
         Divizie divizie=divizieRepository.findById(id).orElseThrow(()->{
-            throw new CrudOperationException("Divizia nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         divizie.setIdDivizie(divizieDto.getIdDivizie());
@@ -64,7 +61,7 @@ public class DivizieService {
 
     public void deleteDivizie(Long id){
         Divizie divizie=divizieRepository.findById(id).orElseThrow(()->{
-            throw new CrudOperationException("Divizia nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         divizieRepository.delete(divizie);
@@ -72,7 +69,7 @@ public class DivizieService {
 
     public List<ClubSportivDto> getCluburiSportiveDinDivizie(Long idDivizie){
         Divizie divizie=divizieRepository.findById(idDivizie).orElseThrow(()->{
-            throw new CrudOperationException("Divizia nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         List<ClubSportiv> cluburiSportive = divizie.getCluburiSportive();
@@ -81,7 +78,6 @@ public class DivizieService {
                 .map(club->ClubSportivDto.builder()
                         .numeClubSportiv(club.getNumeClubSportiv())
                         .logo(azureBlobAdapter.getFileURL(club.getLogo()))
-                        .build())
-                .collect(Collectors.toList());
+                        .build()).toList();
     }
 }
