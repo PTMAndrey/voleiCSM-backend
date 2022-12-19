@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -125,7 +126,7 @@ public class ClubSportivService {
                 .collect(Collectors.toList());
     }
 
-    public ClubSportiv adaugarePersoanaLaClubSportiv(Long idClubSportiv, Long idPersoana){
+    public ClubSportiv adaugarePersoanaLaClubSportiv(Long idClubSportiv, UUID idPersoana){
         ClubSportiv clubSportiv=clubSportivRepository.findById(idClubSportiv).orElseThrow(()->{
             throw new CrudOperationException("Clubul sportiv nu exista");
         });
@@ -156,7 +157,7 @@ public class ClubSportivService {
                         .nume(pers.getNume())
                         .prenume(pers.getPrenume())
                         .dataNasterii(pers.getDataNasterii())
-                        .inalitime(pers.getInalitime())
+                        .inaltime(pers.getInaltime())
                         .nationalitate(pers.getNationalitate())
                         .post(pers.getPost())
                         .descriere(pers.getDescriere())

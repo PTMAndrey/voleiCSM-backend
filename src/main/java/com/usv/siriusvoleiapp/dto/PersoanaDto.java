@@ -25,7 +25,7 @@ public class PersoanaDto {
 
     private String dataNasterii;
 
-    private String inalitime;
+    private String inaltime;
 
     private String nationalitate;
 

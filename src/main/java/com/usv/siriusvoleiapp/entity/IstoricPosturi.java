@@ -1,12 +1,14 @@
 package com.usv.siriusvoleiapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumPost;
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -14,14 +16,14 @@ import javax.persistence.Id;
 @Builder
 @Getter
 @Setter
-public class IstoricPersoana {
+public class IstoricPosturi {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idIstoricPersoana;
 
-    private Long idPersoana;
+    private UUID id;
 
-    private String post;
+    private EnumPost post;
 
     @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)
     private String dataInceput;

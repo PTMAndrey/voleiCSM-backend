@@ -1,12 +1,13 @@
 package com.usv.siriusvoleiapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusStire;
 import lombok.*;
-import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -17,5 +18,34 @@ import javax.persistence.Id;
 public class Stiri {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idStiri;
+    private UUID id;
+
+    @NotBlank(message = "Name is mandatory")
+    private String titlu;
+
+    @NotBlank(message = "Name is mandatory")
+    private String autor;
+
+    @NotBlank(message = "Name is mandatory")
+    @Column(length=10485760)
+    private String descriere;
+
+    private String hashtag;
+
+    @Enumerated
+    @NotBlank(message = "Name is mandatory")
+    private EnumStatusStire status;
+
+    @NotBlank(message = "Name is mandatory")
+    @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)
+    private String dataPublicarii;
+
+    @Column(length=10485760)
+    private String imagini;
+
+    @ElementCollection(targetClass=String.class)
+    private List<String> imaginiURL;
+
+    private String videoclipuri;
+
 }

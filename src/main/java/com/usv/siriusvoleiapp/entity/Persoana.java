@@ -7,9 +7,9 @@ import com.usv.siriusvoleiapp.declaratieEnum.EnumPost;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -17,10 +17,10 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class Persoana implements Serializable {
+public class Persoana {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idPersoana;
+    private UUID id;
 
     private String imagine;
 
@@ -31,7 +31,7 @@ public class Persoana implements Serializable {
     @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)
     private String dataNasterii;
 
-    private String inalitime;
+    private String inaltime;
 
     private String nationalitate;
 
@@ -47,11 +47,19 @@ public class Persoana implements Serializable {
     private EnumNumeDivizie numeDivizie;
 
     @OneToMany(
-            targetEntity = IstoricPersoana.class,
-            fetch = FetchType.EAGER,
+            targetEntity = IstoricPosturi.class,
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-//    @JoinColumn(name="idPersoana", referencedColumnName = "idPersoana")
-    private List<IstoricPersoana> istoricPosturi = new ArrayList<>();
+    @JoinColumn(name="id", referencedColumnName = "id")
+    private List<IstoricPosturi> istoricPosturi = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = RealizariPersonale.class,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name="id", referencedColumnName = "id")
+    private List<RealizariPersonale> realizariPersonale = new ArrayList<>();
 
 }

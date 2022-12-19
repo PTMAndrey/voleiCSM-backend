@@ -1,5 +1,7 @@
 package com.usv.siriusvoleiapp.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumPost;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,5 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class RealizariPersonaleDto {
-    private Long id;
+    private String denumireRezultat;
+
+    private String dataObtinerii;
 }
