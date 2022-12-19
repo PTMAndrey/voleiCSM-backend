@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class EditieDto {
-    private Long id;
+    private String numeEditie;
+
+    private String perioada;
 }

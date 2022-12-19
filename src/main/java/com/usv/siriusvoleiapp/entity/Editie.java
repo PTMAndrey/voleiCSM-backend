@@ -28,7 +28,7 @@ public class Editie {
             cascade = CascadeType.ALL
     )
     @JoinColumn(name="idClubSportiv", referencedColumnName = "idClubSportiv")
-    private List<IstoricPosturi> idClubSportiv = new ArrayList<>();
+    private List<Long> idCluburiSportive = new ArrayList<>();
 
     @OneToMany(
             targetEntity = Divizie.class,
@@ -36,7 +36,7 @@ public class Editie {
             cascade = CascadeType.ALL
     )
     @JoinColumn(name="idDivizie", referencedColumnName = "idDivizie")
-    private List<IstoricPosturi> idDivizie = new ArrayList<>();
+    private List<Long> idDivizii = new ArrayList<>();
 
 
 
