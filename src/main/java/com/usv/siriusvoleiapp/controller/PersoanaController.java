@@ -40,7 +40,7 @@ public class PersoanaController {
     }
 
     @GetMapping("/filtru")
-    public ResponseEntity<List<Persoana>> getStiri(@RequestParam("tipPersonal") EnumPersonal tipPersonal, @RequestParam("divizie") EnumNumeDivizie divizie, @RequestParam("nume") Optional<String> nume, @RequestParam("prenume") Optional<String> prenume) throws ParseException {
+    public ResponseEntity<List<Persoana>> getPersonalFiltrat(@RequestParam("tipPersonal") EnumPersonal tipPersonal, @RequestParam("divizie") EnumNumeDivizie divizie, @RequestParam("nume") Optional<String> nume, @RequestParam("prenume") Optional<String> prenume) throws ParseException {
         if(nume.isPresent())
             return ResponseEntity.ok(persoanaService.getPersonalFiltrat(tipPersonal, divizie, nume.get(), ""));
         else
