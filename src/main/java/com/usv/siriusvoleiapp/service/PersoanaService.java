@@ -1,5 +1,7 @@
 package com.usv.siriusvoleiapp.service;
 
+import com.usv.siriusvoleiapp.declaratieEnum.EnumNumeDivizie;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumPersonal;
 import com.usv.siriusvoleiapp.dto.PersoanaDto;
 import com.usv.siriusvoleiapp.entity.Persoana;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
@@ -56,6 +58,70 @@ public class PersoanaService {
                                 .realizariPersonale(pers.getRealizariPersonale())
                                 .build()));
         return persoane;
+    }
+
+
+    public List<Persoana> getPersonalFiltrat(EnumPersonal tipPersonal, EnumNumeDivizie divizie, String nume, String prenume){
+        Iterable<Persoana> iterblePersoana=persoanaRepository.findAll();
+        List<Persoana> persoane=new ArrayList<>();
+
+        for(Persoana persoana:iterblePersoana){
+            if(nume.length()!=0 && persoana.getNume().contains(nume)){
+                persoane.add(Persoana.builder()
+                        .id(persoana.getId())
+                        .imagine(persoana.getImagine().length()!=0?azureBlobAdapter.getFileURL(persoana.getImagine()):"")
+                        .nume(persoana.getNume())
+                        .prenume(persoana.getPrenume())
+                        .dataNasterii(persoana.getDataNasterii())
+                        .inaltime(persoana.getInaltime())
+                        .nationalitate(persoana.getNationalitate())
+                        .personal(persoana.getPersonal())
+                        .post(persoana.getPost())
+                        .descriere(persoana.getDescriere())
+                        .numeDivizie(persoana.getNumeDivizie())
+                        .istoricPosturi(persoana.getIstoricPosturi())
+                        .realizariPersonale(persoana.getRealizariPersonale())
+                        .build());
+            }
+            if(prenume.length()!=0 && persoana.getPrenume().contains(prenume)){
+                persoane.add(Persoana.builder()
+                        .id(persoana.getId())
+                        .imagine(persoana.getImagine().length()!=0?azureBlobAdapter.getFileURL(persoana.getImagine()):"")
+                        .nume(persoana.getNume())
+                        .prenume(persoana.getPrenume())
+                        .dataNasterii(persoana.getDataNasterii())
+                        .inaltime(persoana.getInaltime())
+                        .nationalitate(persoana.getNationalitate())
+                        .personal(persoana.getPersonal())
+                        .post(persoana.getPost())
+                        .descriere(persoana.getDescriere())
+                        .numeDivizie(persoana.getNumeDivizie())
+                        .istoricPosturi(persoana.getIstoricPosturi())
+                        .realizariPersonale(persoana.getRealizariPersonale())
+                        .build());
+            }
+            if(nume.length()==0 && prenume.length()==0){
+                persoane.add(Persoana.builder()
+                        .id(persoana.getId())
+                        .imagine(persoana.getImagine().length()!=0?azureBlobAdapter.getFileURL(persoana.getImagine()):"")
+                        .nume(persoana.getNume())
+                        .prenume(persoana.getPrenume())
+                        .dataNasterii(persoana.getDataNasterii())
+                        .inaltime(persoana.getInaltime())
+                        .nationalitate(persoana.getNationalitate())
+                        .personal(persoana.getPersonal())
+                        .post(persoana.getPost())
+                        .descriere(persoana.getDescriere())
+                        .numeDivizie(persoana.getNumeDivizie())
+                        .istoricPosturi(persoana.getIstoricPosturi())
+                        .realizariPersonale(persoana.getRealizariPersonale())
+                        .build());
+            }
+        }
+
+        return persoane.stream().filter(persoana->persoana.getPersonal().equals(tipPersonal))
+                .filter(persoana->persoana.getNumeDivizie().equals(divizie))
+                .toList();
     }
 
     public Persoana getPersoanaDupaId(UUID id){
