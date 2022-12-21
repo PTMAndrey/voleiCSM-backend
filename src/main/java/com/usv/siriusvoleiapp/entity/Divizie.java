@@ -22,4 +22,5 @@ public class Divizie {
 
     @ManyToMany(mappedBy = "divizii")
     private List<ClubSportiv> cluburiSportive= new ArrayList<>();
+
 }

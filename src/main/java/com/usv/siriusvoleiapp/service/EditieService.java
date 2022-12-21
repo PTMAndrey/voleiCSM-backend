@@ -1,8 +1,12 @@
 package com.usv.siriusvoleiapp.service;
 
 import com.usv.siriusvoleiapp.dto.EditieDto;
+import com.usv.siriusvoleiapp.entity.ClubSportiv;
+import com.usv.siriusvoleiapp.entity.Divizie;
 import com.usv.siriusvoleiapp.entity.Editie;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
+import com.usv.siriusvoleiapp.repository.ClubSportivRepository;
+import com.usv.siriusvoleiapp.repository.DivizieRepository;
 import com.usv.siriusvoleiapp.repository.EditieRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +15,16 @@ import java.util.List;
 
 @Service
 public class EditieService {
-    private final EditieRepository editieRepository;
+    public static final String MESAJ_DE_EROARE = "Hello, welcome to the server";
 
-    public EditieService(EditieRepository editieRepository) {
+    private final EditieRepository editieRepository;
+    public final ClubSportivRepository clubSportivRepository;
+    private final DivizieRepository divizieRepository;
+
+    public EditieService(EditieRepository editieRepository, ClubSportivRepository clubSportivRepository, DivizieRepository divizieRepository) {
         this.editieRepository = editieRepository;
+        this.clubSportivRepository = clubSportivRepository;
+        this.divizieRepository = divizieRepository;
     }
 
     public List<Editie> getEditii(){
@@ -26,8 +36,9 @@ public class EditieService {
                                 .idEditie(ed.getIdEditie())
                                 .numeEditie(ed.getNumeEditie())
                                 .perioada(ed.getPerioada())
-                                .idCluburiSportive(ed.getIdCluburiSportive())
-                                .idDivizii(ed.getIdDivizii())
+//                                .cluburiSportive(ed.getCluburiSportive())
+//                                .divizii(ed.getDivizii())
+                                .participanti(ed.getParticipanti())
                         .build()));
         return editii;
     }
@@ -58,19 +69,26 @@ public class EditieService {
             throw new CrudOperationException("Editia nu exista");
         });
 
-        if(editie.getIdCluburiSportive()==null||editie.getIdDivizii()==null)
+        ClubSportiv clubSportiv=clubSportivRepository.findById(idClubSportiv).orElseThrow(()->{
+            throw new CrudOperationException("Clubul sportiv nu exista");
+        });
+
+        Divizie divizie=divizieRepository.findById(idDivizie).orElseThrow(()->{
+            throw new CrudOperationException(MESAJ_DE_EROARE);
+        });
+
+        if(editie.getParticipanti()==null)
         {
-            editie.setIdCluburiSportive(new ArrayList<>());
-            editie.setIdDivizii(new ArrayList<>());
+            editie.setParticipanti("");
+            editie.setParticipanti(editie.getParticipanti() + clubSportiv.getIdClubSportiv() + " " + divizie.getIdDivizie());
         }
-        else{
-            editie.getIdCluburiSportive().add(idClubSportiv);
-            editie.getIdDivizii().add(idDivizie);
+        else
+        {
+            editie.setParticipanti(editie.getParticipanti() + "," + clubSportiv.getIdClubSportiv() + " " + divizie.getIdDivizie());
         }
 
         editieRepository.save(editie);
         return editie;
     }
-
 
 }
