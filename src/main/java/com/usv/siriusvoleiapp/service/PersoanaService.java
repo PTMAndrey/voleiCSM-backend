@@ -65,62 +65,27 @@ public class PersoanaService {
         Iterable<Persoana> iterblePersoana=persoanaRepository.findAll();
         List<Persoana> persoane=new ArrayList<>();
 
-        for(Persoana persoana:iterblePersoana){
-            if(nume.length()!=0 && persoana.getNume().contains(nume)){
+        iterblePersoana.forEach(pers->
                 persoane.add(Persoana.builder()
-                        .id(persoana.getId())
-                        .imagine(persoana.getImagine().length()!=0?azureBlobAdapter.getFileURL(persoana.getImagine()):"")
-                        .nume(persoana.getNume())
-                        .prenume(persoana.getPrenume())
-                        .dataNasterii(persoana.getDataNasterii())
-                        .inaltime(persoana.getInaltime())
-                        .nationalitate(persoana.getNationalitate())
-                        .personal(persoana.getPersonal())
-                        .post(persoana.getPost())
-                        .descriere(persoana.getDescriere())
-                        .numeDivizie(persoana.getNumeDivizie())
-                        .istoricPosturi(persoana.getIstoricPosturi())
-                        .realizariPersonale(persoana.getRealizariPersonale())
-                        .build());
-            }
-            if(prenume.length()!=0 && persoana.getPrenume().contains(prenume)){
-                persoane.add(Persoana.builder()
-                        .id(persoana.getId())
-                        .imagine(persoana.getImagine().length()!=0?azureBlobAdapter.getFileURL(persoana.getImagine()):"")
-                        .nume(persoana.getNume())
-                        .prenume(persoana.getPrenume())
-                        .dataNasterii(persoana.getDataNasterii())
-                        .inaltime(persoana.getInaltime())
-                        .nationalitate(persoana.getNationalitate())
-                        .personal(persoana.getPersonal())
-                        .post(persoana.getPost())
-                        .descriere(persoana.getDescriere())
-                        .numeDivizie(persoana.getNumeDivizie())
-                        .istoricPosturi(persoana.getIstoricPosturi())
-                        .realizariPersonale(persoana.getRealizariPersonale())
-                        .build());
-            }
-            if(nume.length()==0 && prenume.length()==0){
-                persoane.add(Persoana.builder()
-                        .id(persoana.getId())
-                        .imagine(persoana.getImagine().length()!=0?azureBlobAdapter.getFileURL(persoana.getImagine()):"")
-                        .nume(persoana.getNume())
-                        .prenume(persoana.getPrenume())
-                        .dataNasterii(persoana.getDataNasterii())
-                        .inaltime(persoana.getInaltime())
-                        .nationalitate(persoana.getNationalitate())
-                        .personal(persoana.getPersonal())
-                        .post(persoana.getPost())
-                        .descriere(persoana.getDescriere())
-                        .numeDivizie(persoana.getNumeDivizie())
-                        .istoricPosturi(persoana.getIstoricPosturi())
-                        .realizariPersonale(persoana.getRealizariPersonale())
-                        .build());
-            }
-        }
+                        .id(pers.getId())
+                        .imagine(pers.getImagine().length()!=0?azureBlobAdapter.getFileURL(pers.getImagine()):"")
+                        .nume(pers.getNume())
+                        .prenume(pers.getPrenume())
+                        .dataNasterii(pers.getDataNasterii())
+                        .inaltime(pers.getInaltime())
+                        .nationalitate(pers.getNationalitate())
+                        .personal(pers.getPersonal())
+                        .post(pers.getPost())
+                        .descriere(pers.getDescriere())
+                        .numeDivizie(pers.getNumeDivizie())
+                        .istoricPosturi(pers.getIstoricPosturi())
+                        .realizariPersonale(pers.getRealizariPersonale())
+                        .build()));
 
         return persoane.stream().filter(persoana->persoana.getPersonal().equals(tipPersonal))
                 .filter(persoana->persoana.getNumeDivizie().equals(divizie))
+                .filter(nume.length()!=0?persoana->persoana.getNume().contains(nume):persoana -> true)
+                .filter(prenume.length()!=0?persoana -> persoana.getPrenume().contains(prenume):persoana -> true)
                 .toList();
     }
 

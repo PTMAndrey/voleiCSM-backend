@@ -2,12 +2,8 @@ package com.usv.siriusvoleiapp.controller;
 
 import com.usv.siriusvoleiapp.declaratieEnum.EnumNumeDivizie;
 import com.usv.siriusvoleiapp.declaratieEnum.EnumPersonal;
-import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusStire;
-import com.usv.siriusvoleiapp.declaratieEnum.EnumTipStire;
 import com.usv.siriusvoleiapp.dto.PersoanaDto;
 import com.usv.siriusvoleiapp.entity.Persoana;
-import com.usv.siriusvoleiapp.entity.RealizariPersonale;
-import com.usv.siriusvoleiapp.entity.Stiri;
 import com.usv.siriusvoleiapp.service.PersoanaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,14 +35,11 @@ public class PersoanaController {
     }
 
     @GetMapping("/filtru")
-    public ResponseEntity<List<Persoana>> getPersonalFiltrat(@RequestParam("tipPersonal") EnumPersonal tipPersonal, @RequestParam("divizie") EnumNumeDivizie divizie, @RequestParam("nume") Optional<String> nume, @RequestParam("prenume") Optional<String> prenume) throws ParseException {
-        if(nume.isPresent())
-            return ResponseEntity.ok(persoanaService.getPersonalFiltrat(tipPersonal, divizie, nume.get(), ""));
+    public ResponseEntity<List<Persoana>> getPersonalFiltrat(@RequestParam("tipPersonal") EnumPersonal tipPersonal, @RequestParam("divizie") EnumNumeDivizie divizie, @RequestParam("nume") Optional<String> nume, @RequestParam("prenume") Optional<String> prenume) {
+        if(nume.isPresent() && prenume.isPresent())
+            return ResponseEntity.ok(persoanaService.getPersonalFiltrat(tipPersonal, divizie, nume.get(), prenume.get()));
         else
-        if(prenume.isPresent())
-            return ResponseEntity.ok(persoanaService.getPersonalFiltrat(tipPersonal, divizie, "", prenume.get()));
-        else
-            return ResponseEntity.ok(persoanaService.getPersonalFiltrat(tipPersonal, divizie, "", ""));
+            return nume.map(value -> ResponseEntity.ok(persoanaService.getPersonalFiltrat(tipPersonal, divizie, value, ""))).orElseGet(() -> prenume.map(s -> ResponseEntity.ok(persoanaService.getPersonalFiltrat(tipPersonal, divizie, "", s))).orElseGet(() -> ResponseEntity.ok(persoanaService.getPersonalFiltrat(tipPersonal, divizie, "", ""))));
     }
 
     @PostMapping
