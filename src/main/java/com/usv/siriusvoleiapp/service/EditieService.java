@@ -36,8 +36,6 @@ public class EditieService {
                                 .idEditie(ed.getIdEditie())
                                 .numeEditie(ed.getNumeEditie())
                                 .perioada(ed.getPerioada())
-//                                .cluburiSportive(ed.getCluburiSportive())
-//                                .divizii(ed.getDivizii())
                                 .participanti(ed.getParticipanti())
                         .build()));
         return editii;
