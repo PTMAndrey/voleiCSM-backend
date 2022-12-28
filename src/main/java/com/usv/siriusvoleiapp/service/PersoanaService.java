@@ -1,5 +1,7 @@
 package com.usv.siriusvoleiapp.service;
 
+import com.usv.siriusvoleiapp.declaratieEnum.EnumNumeDivizie;
+import com.usv.siriusvoleiapp.declaratieEnum.EnumPersonal;
 import com.usv.siriusvoleiapp.dto.PersoanaDto;
 import com.usv.siriusvoleiapp.entity.Persoana;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
@@ -56,6 +58,35 @@ public class PersoanaService {
                                 .realizariPersonale(pers.getRealizariPersonale())
                                 .build()));
         return persoane;
+    }
+
+
+    public List<Persoana> getPersonalFiltrat(EnumPersonal tipPersonal, EnumNumeDivizie divizie, String nume, String prenume){
+        Iterable<Persoana> iterblePersoana=persoanaRepository.findAll();
+        List<Persoana> persoane=new ArrayList<>();
+
+        iterblePersoana.forEach(pers->
+                persoane.add(Persoana.builder()
+                        .id(pers.getId())
+                        .imagine(pers.getImagine().length()!=0?azureBlobAdapter.getFileURL(pers.getImagine()):"")
+                        .nume(pers.getNume())
+                        .prenume(pers.getPrenume())
+                        .dataNasterii(pers.getDataNasterii())
+                        .inaltime(pers.getInaltime())
+                        .nationalitate(pers.getNationalitate())
+                        .personal(pers.getPersonal())
+                        .post(pers.getPost())
+                        .descriere(pers.getDescriere())
+                        .numeDivizie(pers.getNumeDivizie())
+                        .istoricPosturi(pers.getIstoricPosturi())
+                        .realizariPersonale(pers.getRealizariPersonale())
+                        .build()));
+
+        return persoane.stream().filter(persoana->persoana.getPersonal().equals(tipPersonal))
+                .filter(persoana->persoana.getNumeDivizie().equals(divizie))
+                .filter(nume.length()!=0?persoana->persoana.getNume().contains(nume):persoana -> true)
+                .filter(prenume.length()!=0?persoana -> persoana.getPrenume().contains(prenume):persoana -> true)
+                .toList();
     }
 
     public Persoana getPersoanaDupaId(UUID id){

@@ -3,8 +3,6 @@ package com.usv.siriusvoleiapp.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -18,4 +16,9 @@ public class Editie {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idEditie;
 
+    private String numeEditie;
+
+    private String perioada;
+
+    private String participanti;
 }
