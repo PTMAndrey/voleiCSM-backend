@@ -29,7 +29,7 @@ public class Editie {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JoinColumn(name="idEditie", referencedColumnName = "idMeci")
+    @JoinColumn(name="idEditie", referencedColumnName = "idEditie")
     private List<Meci> meciuri = new ArrayList<>();
 
 }
