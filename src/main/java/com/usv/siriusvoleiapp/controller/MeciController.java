@@ -19,7 +19,7 @@ public class MeciController {
 
     @GetMapping
     public ResponseEntity<List<Meci>> getEditii(){
-        return ResponseEntity.ok(meciService.getMeniuri());
+        return ResponseEntity.ok(meciService.getMeciuri());
     }
 
     @PostMapping
