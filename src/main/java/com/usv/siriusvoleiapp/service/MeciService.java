@@ -48,7 +48,7 @@ public class MeciService {
         return meciuri;
     }
 
-    public List<Meci> getMeciuriFiltrate(String status, String idCampionat, String data){
+    public List<Meci> getMeciuriFiltrate(EnumStatusMeci status, String idCampionat, String data){
         Iterable<Meci> iterableMeciuri=meciRepository.findAll();
         List<Meci> meciuri= new ArrayList<>();
 
@@ -69,7 +69,10 @@ public class MeciService {
                     .build());
         }
 
-        return meciuri;
+        return meciuri.stream().filter(meci->meci.getStatus().equals(status))
+                .filter(meci->meci.getIdEditie().toString().equals(idCampionat))
+                .filter(data.length()!=0?meci->meci.getData().split(" ")[0].equals(data):meci->true)
+                .toList();
     }
 
     public Meci addMeci(MeciDto meciDto){
