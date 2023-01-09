@@ -1,7 +1,6 @@
 package com.usv.siriusvoleiapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusMeci;
 import com.usv.siriusvoleiapp.declaratieEnum.EnumTeren;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,8 +14,6 @@ import lombok.NoArgsConstructor;
 public class MeciDto {
     private Long idEditie;
 
-    private EnumStatusMeci status;
-
     @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)
     private String data;
 
@@ -29,4 +26,6 @@ public class MeciDto {
     private String scorAdversar;
 
     private EnumTeren teren;
+
+    private String link;
 }

@@ -4,6 +4,7 @@ import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusMeci;
 import com.usv.siriusvoleiapp.dto.MeciDto;
 import com.usv.siriusvoleiapp.entity.ClubSportiv;
 import com.usv.siriusvoleiapp.entity.Meci;
+import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
 import com.usv.siriusvoleiapp.repository.MeciRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import java.util.List;
 
 @Service
 public class MeciService {
+    public static final String MESAJ_DE_EROARE = "Meciul nu exista";
+
     @Autowired
     private AzureBlobService azureBlobAdapter;
 
@@ -43,9 +46,17 @@ public class MeciService {
                     .scorCSM(meci.getScorCSM())
                     .scorAdversar(meci.getScorAdversar())
                     .teren(meci.getTeren())
+                    .link(meci.getLink())
                     .build());
         }
         return meciuri;
+    }
+
+    public Meci getMeciDupaId(Long id){
+        return meciRepository.findById(id).orElseThrow(()->{
+            throw new CrudOperationException(MESAJ_DE_EROARE);
+        });
+
     }
 
     public List<Meci> getMeciuriFiltrate(EnumStatusMeci status, String idCampionat, String data){
@@ -66,6 +77,7 @@ public class MeciService {
                     .scorCSM(meci.getScorCSM())
                     .scorAdversar(meci.getScorAdversar())
                     .teren(meci.getTeren())
+                    .link(meci.getLink())
                     .build());
         }
 
@@ -88,10 +100,40 @@ public class MeciService {
                 .scorCSM(meciDto.getScorCSM())
                 .scorAdversar(meciDto.getScorAdversar())
                 .teren(meciDto.getTeren())
+                .link(meciDto.getLink())
                 .build();
 
         meciRepository.save(meci);
         return meci;
     }
 
+    public Meci updateMeci(Long idMeci, MeciDto meciDto){
+        Meci meci = meciRepository.findById(idMeci).orElseThrow(()->{
+            throw new CrudOperationException(MESAJ_DE_EROARE);
+        });
+
+        ClubSportiv clubSportiv=clubSportivService.getCluburiSportiveDupaNume(meciDto.getNumeAdversar());
+
+        meci.setIdEditie(meciDto.getIdEditie());
+        meci.setStatus(meciDto.getScorCSM().length()!=0&&meciDto.getScorAdversar().length()!=0? EnumStatusMeci.REZULTAT:EnumStatusMeci.VIITOR);
+        meci.setData(meciDto.getData());
+        meci.setNumeAdversar(meciDto.getNumeAdversar());
+        meci.setLogoAdversar(clubSportiv.getLogo().length()!=0? clubSportiv.getLogo() : "");
+        meci.setLocatie(meciDto.getLocatie());
+        meci.setScorCSM(meciDto.getScorCSM());
+        meci.setScorAdversar(meciDto.getScorAdversar());
+        meci.setTeren(meciDto.getTeren());
+        meci.setLink(meciDto.getLink());
+
+        meciRepository.save(meci);
+        return meci;
+    }
+
+    public void deleteMeci(Long id){
+        Meci meci=meciRepository.findById(id).orElseThrow(()->{
+            throw new CrudOperationException(MESAJ_DE_EROARE);
+        });
+
+        meciRepository.delete(meci);
+    }
 }

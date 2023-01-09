@@ -39,4 +39,6 @@ public class Meci {
     private String scorAdversar;
 
     private EnumTeren teren;
+
+    private String link;
 }

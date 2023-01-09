@@ -4,6 +4,7 @@ import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusMeci;
 import com.usv.siriusvoleiapp.dto.MeciDto;
 import com.usv.siriusvoleiapp.entity.Meci;
 import com.usv.siriusvoleiapp.service.MeciService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,17 +25,30 @@ public class MeciController {
         return ResponseEntity.ok(meciService.getMeciuri());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Meci> getMeciDupaId(@PathVariable Long id){
+        return ResponseEntity.ok(meciService.getMeciDupaId(id));
+    }
+
     @GetMapping("/filtru")
     public ResponseEntity<List<Meci>> getMeciuriFiltrate(@RequestParam("status") EnumStatusMeci status, @RequestParam("campionat") String idCampionat, @RequestParam("dataSpecifica") Optional<String> dataSpecifica){
-        if(dataSpecifica.isPresent())
-            return ResponseEntity.ok(meciService.getMeciuriFiltrate(status, idCampionat, dataSpecifica.get()));
-        else
-            return ResponseEntity.ok(meciService.getMeciuriFiltrate(status, idCampionat, ""));
+        return dataSpecifica.map(s -> ResponseEntity.ok(meciService.getMeciuriFiltrate(status, idCampionat, s))).orElseGet(() -> ResponseEntity.ok(meciService.getMeciuriFiltrate(status, idCampionat, "")));
     }
 
     @PostMapping
     public ResponseEntity<Meci> addEditie(@ModelAttribute MeciDto meciDto) {
         return ResponseEntity.ok(meciService.addMeci(meciDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Meci> updateMeci(@PathVariable Long id, @ModelAttribute MeciDto meciDto ){
+        return ResponseEntity.ok(meciService.updateMeci(id,meciDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMeci(@PathVariable Long id){
+        meciService.deleteMeci(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
