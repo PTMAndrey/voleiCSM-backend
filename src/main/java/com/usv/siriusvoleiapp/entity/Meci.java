@@ -23,6 +23,8 @@ public class Meci {
 
     private Long idEditie;
 
+    private String numeEditie;
+
     private EnumStatusMeci status;
 
     @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)

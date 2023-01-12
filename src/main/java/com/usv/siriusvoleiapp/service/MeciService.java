@@ -3,8 +3,10 @@ package com.usv.siriusvoleiapp.service;
 import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusMeci;
 import com.usv.siriusvoleiapp.dto.MeciDto;
 import com.usv.siriusvoleiapp.entity.ClubSportiv;
+import com.usv.siriusvoleiapp.entity.Editie;
 import com.usv.siriusvoleiapp.entity.Meci;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
+import com.usv.siriusvoleiapp.repository.EditieRepository;
 import com.usv.siriusvoleiapp.repository.MeciRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +23,12 @@ public class MeciService {
 
     private final MeciRepository meciRepository;
     public final ClubSportivService clubSportivService;
+    public final EditieRepository editieRepository;
 
-    public MeciService(MeciRepository meciRepository, ClubSportivService clubSportivService) {
+    public MeciService(MeciRepository meciRepository, ClubSportivService clubSportivService, EditieRepository editieRepository) {
         this.meciRepository = meciRepository;
         this.clubSportivService = clubSportivService;
+        this.editieRepository = editieRepository;
     }
 
     //add, update scor, update general?, delete
@@ -38,6 +42,7 @@ public class MeciService {
             meciuri.add(Meci.builder()
                     .id(meci.getId())
                     .idEditie(meci.getIdEditie())
+                    .numeEditie(meci.getNumeEditie())
                     .status(meci.getStatus())
                     .data(meci.getData())
                     .numeAdversar(meci.getNumeAdversar())
@@ -69,6 +74,7 @@ public class MeciService {
             meciuri.add(Meci.builder()
                     .id(meci.getId())
                     .idEditie(meci.getIdEditie())
+                    .numeEditie(meci.getNumeEditie())
                     .status(meci.getStatus())
                     .data(meci.getData())
                     .numeAdversar(meci.getNumeAdversar())
@@ -89,9 +95,13 @@ public class MeciService {
 
     public Meci addMeci(MeciDto meciDto){
         ClubSportiv clubSportiv=clubSportivService.getCluburiSportiveDupaNume(meciDto.getNumeAdversar());
+        Editie editie=editieRepository.findById(meciDto.getIdEditie()).orElseThrow(()->{
+            throw new CrudOperationException("Editia nu exista");
+        });
 
         Meci meci=Meci.builder()
                 .idEditie(meciDto.getIdEditie())
+                .numeEditie(editie.getNumeEditie())
                 .status(meciDto.getScorCSM().length()!=0&&meciDto.getScorAdversar().length()!=0? EnumStatusMeci.REZULTAT:EnumStatusMeci.VIITOR)
                 .data(meciDto.getData())
                 .numeAdversar(meciDto.getNumeAdversar())
@@ -113,8 +123,12 @@ public class MeciService {
         });
 
         ClubSportiv clubSportiv=clubSportivService.getCluburiSportiveDupaNume(meciDto.getNumeAdversar());
+        Editie editie=editieRepository.findById(meciDto.getIdEditie()).orElseThrow(()->{
+            throw new CrudOperationException("Editia nu exista");
+        });
 
         meci.setIdEditie(meciDto.getIdEditie());
+        meci.setNumeEditie(editie.getNumeEditie());
         meci.setStatus(meciDto.getScorCSM().length()!=0&&meciDto.getScorAdversar().length()!=0? EnumStatusMeci.REZULTAT:EnumStatusMeci.VIITOR);
         meci.setData(meciDto.getData());
         meci.setNumeAdversar(meciDto.getNumeAdversar());
