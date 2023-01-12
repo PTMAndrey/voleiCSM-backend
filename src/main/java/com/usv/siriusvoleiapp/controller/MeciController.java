@@ -36,7 +36,7 @@ public class MeciController {
     }
 
     @PostMapping
-    public ResponseEntity<Meci> addEditie(@ModelAttribute MeciDto meciDto) {
+    public ResponseEntity<Meci> addEditie(@RequestBody MeciDto meciDto) {
         return ResponseEntity.ok(meciService.addMeci(meciDto));
     }
 
