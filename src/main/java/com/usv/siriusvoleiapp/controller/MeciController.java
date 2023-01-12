@@ -41,7 +41,7 @@ public class MeciController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Meci> updateMeci(@PathVariable Long id, @ModelAttribute MeciDto meciDto ){
+    public ResponseEntity<Meci> updateMeci(@PathVariable Long id, @RequestBody MeciDto meciDto ){
         return ResponseEntity.ok(meciService.updateMeci(id,meciDto));
     }
 
