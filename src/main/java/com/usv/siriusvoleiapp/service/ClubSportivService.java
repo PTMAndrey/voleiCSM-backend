@@ -18,10 +18,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class ClubSportivService {
+    public static final String MESAJ_DE_EROARE = "Clubul sportiv nu exista";
+
     @Autowired
     private AzureBlobService azureBlobAdapter;
 
@@ -50,6 +51,23 @@ public class ClubSportivService {
         return cluburiSportive;
     }
 
+    public ClubSportiv getCluburiSportiveDupaNume(String nume){
+        Iterable<ClubSportiv> iterableCluburiSportive = clubSportivRepository.findAll();
+        List<ClubSportiv> cluburiSportive= new ArrayList<>();
+
+        List<ClubSportiv> finalCluburiSportive = cluburiSportive;
+        iterableCluburiSportive.forEach(clubSportiv ->
+                finalCluburiSportive.add(ClubSportiv.builder()
+                        .idClubSportiv(clubSportiv.getIdClubSportiv())
+                        .numeClubSportiv(clubSportiv.getNumeClubSportiv())
+                        .logo(azureBlobAdapter.getFileURL(clubSportiv.getLogo()))
+                        .viziuneClubSportiv(clubSportiv.getViziuneClubSportiv())
+                        .istorieClubSportiv(clubSportiv.getIstorieClubSportiv())
+                        .build()));
+        cluburiSportive= cluburiSportive.stream().filter(club->club.getNumeClubSportiv().equals(nume)).toList();
+        return cluburiSportive.get(0);
+    }
+
     public ClubSportivDto addClubSportiv(MultipartFile file, ClubSportivDto clubSportivDto) throws IOException {
         String fileName = azureBlobAdapter.upload(file);
         ClubSportiv clubSportiv=ClubSportiv.builder()
@@ -65,7 +83,7 @@ public class ClubSportivService {
     public ClubSportivDto updateClubSportiv(Long id, ClubSportivDto clubSportivDto, MultipartFile file) throws IOException {
 //        WORNING
         ClubSportiv clubSportiv=clubSportivRepository.findById(id).orElseThrow(()->{
-            throw new CrudOperationException("Clubul sportiv nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
         String fileName;
         if(!file.isEmpty()){
@@ -86,7 +104,7 @@ public class ClubSportivService {
 
     public void deleteClubSportiv(Long id){
         ClubSportiv clubSportiv=clubSportivRepository.findById(id).orElseThrow(()->{
-            throw new CrudOperationException("Clubul sportiv nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         azureBlobAdapter.deleteBlob(clubSportiv.getLogo());
@@ -95,7 +113,7 @@ public class ClubSportivService {
 
     public ClubSportiv adaugareDivizieLaClubSportiv(Long idClubSportiv, Long idDivizie){
         ClubSportiv clubSportiv=clubSportivRepository.findById(idClubSportiv).orElseThrow(()->{
-            throw new CrudOperationException("Clubul sportiv nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         Divizie divizie=divizieRepository.findById(idDivizie).orElseThrow(()->{
@@ -113,7 +131,7 @@ public class ClubSportivService {
 
     public List<DivizieDto> getDiviziiClubSportiv(Long idClub){
         ClubSportiv clubSportiv=clubSportivRepository.findById(idClub).orElseThrow(()->{
-            throw new CrudOperationException("Clubul sportiv nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         List<Divizie> divizii = clubSportiv.getDivizii();
@@ -122,13 +140,12 @@ public class ClubSportivService {
                 .map(divizie-> DivizieDto.builder()
                         .idDivizie(divizie.getIdDivizie())
                         .denumireDivizie(divizie.getDenumireDivizie())
-                        .build())
-                .collect(Collectors.toList());
+                        .build()).toList();
     }
 
     public ClubSportiv adaugarePersoanaLaClubSportiv(Long idClubSportiv, UUID idPersoana){
         ClubSportiv clubSportiv=clubSportivRepository.findById(idClubSportiv).orElseThrow(()->{
-            throw new CrudOperationException("Clubul sportiv nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         Persoana persoana=persoanaRepository.findById(idPersoana).orElseThrow(()->{
@@ -146,7 +163,7 @@ public class ClubSportivService {
 
     public List<PersoanaDto> getPersoaneClubSportiv(Long idClub){
         ClubSportiv clubSportiv=clubSportivRepository.findById(idClub).orElseThrow(()->{
-            throw new CrudOperationException("Clubul sportiv nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         List<Persoana> persoane = clubSportiv.getPersoane();
@@ -162,7 +179,6 @@ public class ClubSportivService {
                         .post(pers.getPost())
                         .descriere(pers.getDescriere())
                         .numeDivizie(pers.getNumeDivizie())
-                        .build())
-                .collect(Collectors.toList());
+                        .build()).toList();
     }
 }

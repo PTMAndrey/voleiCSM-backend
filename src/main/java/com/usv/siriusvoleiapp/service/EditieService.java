@@ -37,6 +37,7 @@ public class EditieService {
                                 .numeEditie(ed.getNumeEditie())
                                 .perioada(ed.getPerioada())
                                 .participanti(ed.getParticipanti())
+                                .meciuri(ed.getMeciuri())
                         .build()));
         return editii;
     }
