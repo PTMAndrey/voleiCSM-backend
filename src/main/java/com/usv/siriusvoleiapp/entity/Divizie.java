@@ -23,4 +23,12 @@ public class Divizie {
     @ManyToMany(mappedBy = "divizii")
     private List<ClubSportiv> cluburiSportive= new ArrayList<>();
 
+    @OneToMany(
+            targetEntity = Premii.class,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name="idDivizie", referencedColumnName = "idDivizie")
+    private List<Meci> premii = new ArrayList<>();
+
 }

@@ -48,8 +48,11 @@ public class PersoanaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Persoana> updatePersoana(@PathVariable UUID id, @ModelAttribute PersoanaDto persoanaDto, @RequestParam("file") MultipartFile file) throws IOException {
-        return ResponseEntity.ok(persoanaService.updatePersoana(id,persoanaDto,file));
+    public ResponseEntity<Persoana> updatePersoana(@PathVariable UUID id, @ModelAttribute PersoanaDto persoanaDto, @RequestParam("file") Optional<MultipartFile> file) throws IOException {
+        if(file.isPresent())
+            return ResponseEntity.ok(persoanaService.updatePersoana(id,persoanaDto,file.get()));
+        else
+            return ResponseEntity.ok(persoanaService.updatePersoanaFaraPoza(id,persoanaDto));
     }
 
     @DeleteMapping("/{id}")

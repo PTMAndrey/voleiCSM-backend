@@ -121,7 +121,7 @@ public class PersoanaService {
 
     public Persoana updatePersoana(UUID id, PersoanaDto persoanaDto, MultipartFile file) throws IOException {
         Persoana persoana=persoanaRepository.findById(id).orElseThrow(()->{
-            throw new CrudOperationException("Persoana nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
         String fileName;
         if(!file.isEmpty()){
@@ -144,9 +144,26 @@ public class PersoanaService {
         return persoana;
     }
 
+    public Persoana updatePersoanaFaraPoza(UUID id, PersoanaDto persoanaDto) {
+        Persoana persoana=persoanaRepository.findById(id).orElseThrow(()->{
+            throw new CrudOperationException(MESAJ_DE_EROARE);
+        });
+        persoana.setNume(persoanaDto.getNume());
+        persoana.setPrenume(persoanaDto.getPrenume());
+        persoana.setDataNasterii(persoanaDto.getDataNasterii());
+        persoana.setInaltime(persoanaDto.getInaltime());
+        persoana.setNationalitate(persoanaDto.getNationalitate());
+        persoana.setPersonal(persoanaDto.getPersonal());
+        persoana.setPost(persoanaDto.getPost());
+        persoana.setDescriere(persoanaDto.getDescriere());
+
+        persoanaRepository.save(persoana);
+        return persoana;
+    }
+
     public void deletePersoana(UUID id){
         Persoana persoana=persoanaRepository.findById(id).orElseThrow(()->{
-            throw new CrudOperationException("Persoana nu exista");
+            throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
         if(persoana.getImagine().length()!=0)

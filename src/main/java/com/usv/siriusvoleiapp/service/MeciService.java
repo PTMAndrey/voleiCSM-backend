@@ -31,7 +31,6 @@ public class MeciService {
         this.editieRepository = editieRepository;
     }
 
-    //add, update scor, update general?, delete
     public List<Meci> getMeciuri(){
         Iterable<Meci> iterableMeciuri=meciRepository.findAll();
         List<Meci> meciuri= new ArrayList<>();
@@ -90,6 +89,33 @@ public class MeciService {
         return meciuri.stream().filter(meci->meci.getStatus().equals(status))
                 .filter(meci->meci.getIdEditie().toString().equals(idCampionat))
                 .filter(data.length()!=0?meci->meci.getData().split(" ")[0].equals(data):meci->true)
+                .toList();
+    }
+
+    public List<Meci> getMeciuriDupaStatus(EnumStatusMeci status){
+        Iterable<Meci> iterableMeciuri=meciRepository.findAll();
+        List<Meci> meciuri= new ArrayList<>();
+
+        for(Meci meci: iterableMeciuri){
+            ClubSportiv clubSportiv=clubSportivService.getCluburiSportiveDupaNume(meci.getNumeAdversar());
+
+            meciuri.add(Meci.builder()
+                    .id(meci.getId())
+                    .idEditie(meci.getIdEditie())
+                    .numeEditie(meci.getNumeEditie())
+                    .status(meci.getStatus())
+                    .data(meci.getData())
+                    .numeAdversar(meci.getNumeAdversar())
+                    .logoAdversar(clubSportiv.getLogo().length()!=0?clubSportiv.getLogo():"")
+                    .locatie(meci.getLocatie())
+                    .scorCSM(meci.getScorCSM())
+                    .scorAdversar(meci.getScorAdversar())
+                    .teren(meci.getTeren())
+                    .link(meci.getLink())
+                    .build());
+        }
+
+        return meciuri.stream().filter(meci->meci.getStatus().equals(status))
                 .toList();
     }
 

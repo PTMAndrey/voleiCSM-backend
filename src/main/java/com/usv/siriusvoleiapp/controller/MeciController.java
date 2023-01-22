@@ -35,6 +35,11 @@ public class MeciController {
         return dataSpecifica.map(s -> ResponseEntity.ok(meciService.getMeciuriFiltrate(status, idCampionat, s))).orElseGet(() -> ResponseEntity.ok(meciService.getMeciuriFiltrate(status, idCampionat, "")));
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<List<Meci>> getMeciuriDupaStatus(@RequestParam("status") EnumStatusMeci status){
+        return ResponseEntity.ok(meciService.getMeciuriDupaStatus(status));
+    }
+
     @PostMapping
     public ResponseEntity<Meci> addEditie(@RequestBody MeciDto meciDto) {
         return ResponseEntity.ok(meciService.addMeci(meciDto));

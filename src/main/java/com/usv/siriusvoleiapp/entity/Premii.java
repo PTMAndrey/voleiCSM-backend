@@ -1,9 +1,6 @@
 package com.usv.siriusvoleiapp.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,10 +10,21 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Premii {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idPremii;
+    private Long id;
+
+    private String denumire;
+
+    private String locCampionat;
+
+    private String an;
+
+    private Long idEditie;
+
+    private Long idDivizie;
 }
