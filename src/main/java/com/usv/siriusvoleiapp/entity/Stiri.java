@@ -40,7 +40,7 @@ public class Stiri {
     @JsonFormat(pattern = "$data.configuration.format", shape = JsonFormat.Shape.STRING)
     private String dataPublicarii;
 
-    @Column(length=10485760)
+    @Column(length=1000000000)
     private String imagini;
 
     @ElementCollection(targetClass=String.class)
