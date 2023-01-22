@@ -32,4 +32,11 @@ public class Editie {
     @JoinColumn(name="idEditie", referencedColumnName = "idEditie")
     private List<Meci> meciuri = new ArrayList<>();
 
+    @OneToMany(
+            targetEntity = Premii.class,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name="idEditie", referencedColumnName = "idEditie")
+    private List<Meci> premii = new ArrayList<>();
 }
