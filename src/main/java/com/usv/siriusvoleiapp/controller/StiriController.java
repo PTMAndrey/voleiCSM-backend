@@ -55,8 +55,11 @@ public class StiriController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Stiri> updateStire(@PathVariable UUID id,@ModelAttribute StiriDto stiriDto, @RequestParam("file") List<MultipartFile> file) throws IOException {
-        return ResponseEntity.ok(stiriService.updateStire(id, stiriDto, file));
+    public ResponseEntity<Stiri> updateStire(@PathVariable UUID id,@ModelAttribute StiriDto stiriDto, @RequestParam("file") Optional<List<MultipartFile>> file) throws IOException {
+        if(file.isPresent())
+            return ResponseEntity.ok(stiriService.updateStire(id, stiriDto, file.get()));
+        else
+            return ResponseEntity.ok(stiriService.updateStireFaraPoza(id, stiriDto));
     }
 
     @PutMapping("/{id}/updateStatus")
