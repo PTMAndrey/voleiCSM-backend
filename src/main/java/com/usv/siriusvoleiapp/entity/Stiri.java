@@ -27,7 +27,7 @@ public class Stiri {
     private String autor;
 
     @NotBlank(message = "Name is mandatory")
-    @Column(length=10485760)
+    @Column(length=1000000000)
     private String descriere;
 
     private String hashtag;
