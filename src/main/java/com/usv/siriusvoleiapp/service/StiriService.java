@@ -226,6 +226,28 @@ public class StiriService {
         return  stiri;
     }
 
+    public Stiri addStireFaraPoza (StiriDto stiriDto) throws IOException, ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date currentDate=sdf.parse(formatter.format(new Date()));
+
+
+        if(sdf.parse(stiriDto.getDataPublicarii()).getTime() < currentDate.getTime() && stiriDto.getStatus().toString().equals("PROGRAMAT"))
+            throw new CrudOperationException("Nu se poate programa o stire in trecut");
+
+        Stiri stiri= Stiri.builder()
+                .titlu(stiriDto.getTitlu())
+                .autor(stiriDto.getAutor())
+                .descriere(stiriDto.getDescriere())
+                .hashtag(stiriDto.getHashtag())
+                .status(stiriDto.getStatus())
+                .dataPublicarii(stiriDto.getDataPublicarii())
+                .videoclipuri(null)
+                .build();
+        stiriRepository.save(stiri);
+        return  stiri;
+    }
+
     private static <T> List<T> findDifference(List<T> first, List<T> second)
     {
         List<T> diff = new ArrayList<>(first);

@@ -50,8 +50,11 @@ public class StiriController {
     }
 
     @PostMapping
-    public ResponseEntity<Stiri> addStire(@RequestParam("file") List<MultipartFile> file, @ModelAttribute StiriDto stiriDto) throws IOException, ParseException {
-        return ResponseEntity.ok(stiriService.addStire(file,stiriDto));
+    public ResponseEntity<Stiri> addStire(@RequestParam("file") Optional<List<MultipartFile>> file, @ModelAttribute StiriDto stiriDto) throws IOException, ParseException {
+        if(file.isPresent())
+            return ResponseEntity.ok(stiriService.addStire(file.get(),stiriDto));
+        else
+            return ResponseEntity.ok(stiriService.addStireFaraPoza(stiriDto));
     }
 
     @PutMapping("/{id}")
