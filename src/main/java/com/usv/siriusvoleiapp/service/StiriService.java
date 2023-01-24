@@ -226,6 +226,12 @@ public class StiriService {
         return  stiri;
     }
 
+    private static <T> List<T> findDifference(List<T> first, List<T> second)
+    {
+        List<T> diff = new ArrayList<>(first);
+        diff.removeAll(second);
+        return diff;
+    }
 
     public Stiri updateStire(UUID id, StiriDto stiriDto, List<MultipartFile> multipartFiles) throws IOException {
         Stiri stire=stiriRepository.findById(id).orElseThrow(()->{
@@ -233,15 +239,29 @@ public class StiriService {
         });
         String numeImaginiStiri=stire.getImagini();
 
-        if(numeImaginiStiri.length()!=0)
+        if(numeImaginiStiri.length()!=0 && stiriDto.getImagine().length()!=0)
         {
             List<String> imagini= Arrays.stream(stire.getImagini().split(", ")).toList();
-            for (String s : imagini) azureBlobAdapter.deleteBlob(s);
+            List<String> imaginiNoi= Arrays.stream(stiriDto.getImagine().split(", ")).toList();
 
-            numeImaginiStiri=azureBlobAdapter.uploadMultipleFile(multipartFiles);
+            List<String> updateImagini= findDifference(imagini, imaginiNoi);
+
+            if(updateImagini.size()!=0){
+                for (String s : updateImagini) azureBlobAdapter.deleteBlob(s);
+
+                numeImaginiStiri=imaginiNoi.get(0);
+                for (String s : imaginiNoi) {
+                    if(!s.equals(numeImaginiStiri))
+                        numeImaginiStiri=numeImaginiStiri+", "+s;
+                }
+            }
         }
-        else
-            numeImaginiStiri=azureBlobAdapter.uploadMultipleFile(multipartFiles);
+
+        if(!multipartFiles.isEmpty())
+        {
+            String numeImaginiStiriNoi=azureBlobAdapter.uploadMultipleFile(multipartFiles);
+            numeImaginiStiri=numeImaginiStiri+", "+numeImaginiStiriNoi;
+        }
 
         stire.setTitlu(stiriDto.getTitlu());
         stire.setAutor(stiriDto.getAutor());
