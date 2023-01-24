@@ -41,7 +41,7 @@ public class Persoana {
     @Enumerated
     private EnumPost post;
 
-    @Column(length=1000000000)
+    @Column(length=10485760)
     private String descriere;
 
     @Enumerated(EnumType.ORDINAL)

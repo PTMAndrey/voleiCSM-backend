@@ -1,6 +1,5 @@
 package com.usv.siriusvoleiapp.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.usv.siriusvoleiapp.declaratieEnum.EnumStatusStire;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
