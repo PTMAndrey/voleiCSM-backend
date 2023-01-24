@@ -239,10 +239,10 @@ public class StiriService {
         });
         String numeImaginiStiri=stire.getImagini();
 
-        if(numeImaginiStiri.length()!=0 && stiriDto.getImagine().length()!=0)
+        if(numeImaginiStiri.length()!=0 && stiriDto.getImagini().length()!=0)
         {
             List<String> imagini= Arrays.stream(stire.getImagini().split(", ")).toList();
-            List<String> imaginiNoi= Arrays.stream(stiriDto.getImagine().split(", ")).toList();
+            List<String> imaginiNoi= Arrays.stream(stiriDto.getImagini().split(", ")).toList();
 
             List<String> updateImagini= findDifference(imagini, imaginiNoi);
 
@@ -262,6 +262,9 @@ public class StiriService {
             String numeImaginiStiriNoi=azureBlobAdapter.uploadMultipleFile(multipartFiles);
             numeImaginiStiri=numeImaginiStiri+", "+numeImaginiStiriNoi;
         }
+
+        if(multipartFiles.isEmpty()&&stiriDto.getImagini().length()==0)
+            numeImaginiStiri="";
 
         stire.setTitlu(stiriDto.getTitlu());
         stire.setAutor(stiriDto.getAutor());

@@ -24,7 +24,7 @@ public class StiriDto {
 
     private String dataPublicarii;
 
-    private String imagine;
+    private String imagini;
 
     private String videoclipuri;
 }
