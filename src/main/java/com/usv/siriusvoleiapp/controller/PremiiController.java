@@ -28,6 +28,11 @@ public class PremiiController {
         return ResponseEntity.ok(premiiService.getPremiiDupaId(id));
     }
 
+    @GetMapping("/filtru")
+    public ResponseEntity<List<Premii>> getPersonalFiltrat(@RequestParam("divizie") String divizie) {
+        return ResponseEntity.ok(premiiService.getPremiiFiltrate(divizie));
+    }
+
     @PostMapping
     public ResponseEntity<Premii> addPremii(@RequestBody PremiiDto premiiDto) {
         return ResponseEntity.ok(premiiService.addPremii(premiiDto));
