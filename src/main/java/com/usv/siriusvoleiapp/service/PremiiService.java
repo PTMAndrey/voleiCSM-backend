@@ -35,6 +35,7 @@ public class PremiiService {
                         .an(pr.getAn())
                         .idEditie(pr.getIdEditie())
                         .idDivizie(pr.getIdDivizie())
+                        .numeDivizie(pr.getNumeDivizie())
                         .build()));
         return premii;
     }
@@ -57,6 +58,7 @@ public class PremiiService {
                         .an(pr.getAn())
                         .idEditie(pr.getIdEditie())
                         .idDivizie(pr.getIdDivizie())
+                        .numeDivizie(pr.getNumeDivizie())
                         .build()));
         return premii.stream().filter(pr->pr.getNumeDivizie().equals(divizie)).toList();
     }
