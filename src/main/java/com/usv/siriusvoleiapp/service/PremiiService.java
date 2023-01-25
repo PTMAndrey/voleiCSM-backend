@@ -2,9 +2,11 @@ package com.usv.siriusvoleiapp.service;
 
 import com.usv.siriusvoleiapp.dto.PremiiDto;
 import com.usv.siriusvoleiapp.entity.Divizie;
+import com.usv.siriusvoleiapp.entity.Editie;
 import com.usv.siriusvoleiapp.entity.Premii;
 import com.usv.siriusvoleiapp.exceptions.CrudOperationException;
 import com.usv.siriusvoleiapp.repository.DivizieRepository;
+import com.usv.siriusvoleiapp.repository.EditieRepository;
 import com.usv.siriusvoleiapp.repository.PremiiRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,12 @@ public class PremiiService {
     private final PremiiRepository premiiRepository;
     private final DivizieRepository divizieRepository;
 
-    public PremiiService(PremiiRepository premiiRepository, DivizieRepository divizieRepository) {
+    private final EditieRepository editieRepository;
+
+    public PremiiService(PremiiRepository premiiRepository, DivizieRepository divizieRepository, EditieRepository editieRepository) {
         this.premiiRepository = premiiRepository;
         this.divizieRepository = divizieRepository;
+        this.editieRepository = editieRepository;
     }
 
     public List<Premii> getPremii(){
@@ -36,6 +41,7 @@ public class PremiiService {
                         .idEditie(pr.getIdEditie())
                         .idDivizie(pr.getIdDivizie())
                         .numeDivizie(pr.getNumeDivizie())
+                        .numeEditie(pr.getNumeEditie())
                         .build()));
         return premii;
     }
@@ -59,6 +65,7 @@ public class PremiiService {
                         .idEditie(pr.getIdEditie())
                         .idDivizie(pr.getIdDivizie())
                         .numeDivizie(pr.getNumeDivizie())
+                        .numeEditie(pr.getNumeEditie())
                         .build()));
         return premii.stream().filter(pr->pr.getNumeDivizie().equals(divizie)).toList();
     }
@@ -68,6 +75,10 @@ public class PremiiService {
             throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
+        Editie editie=editieRepository.findById(premiiDto.getIdEditie()).orElseThrow(()-> {
+                    throw new CrudOperationException(MESAJ_DE_EROARE);
+        });
+
         Premii premii=Premii.builder()
                 .denumire(premiiDto.getDenumire())
                 .locCampionat(premiiDto.getLocCampionat())
@@ -75,6 +86,7 @@ public class PremiiService {
                 .idEditie(premiiDto.getIdEditie())
                 .idDivizie(premiiDto.getIdDivizie())
                 .numeDivizie(divizie.getDenumireDivizie().toString())
+                .numeEditie(editie.getNumeEditie())
                 .build();
 
         premiiRepository.save(premii);
@@ -86,11 +98,22 @@ public class PremiiService {
             throw new CrudOperationException(MESAJ_DE_EROARE);
         });
 
+        Divizie divizie=divizieRepository.findById(premiiDto.getIdDivizie()).orElseThrow(()->{
+            throw new CrudOperationException(MESAJ_DE_EROARE);
+        });
+
+        Editie editie=editieRepository.findById(premiiDto.getIdEditie()).orElseThrow(()-> {
+            throw new CrudOperationException(MESAJ_DE_EROARE);
+        });
+
         premii.setDenumire(premiiDto.getDenumire());
         premii.setLocCampionat(premiiDto.getLocCampionat());
         premii.setAn(premiiDto.getAn());
         premii.setIdEditie(premiiDto.getIdEditie());
         premii.setIdDivizie(premiiDto.getIdDivizie());
+
+        premii.setNumeDivizie(divizie.getDenumireDivizie().toString());
+        premii.setNumeEditie(editie.getNumeEditie());
 
         premiiRepository.save(premii);
         return premii;

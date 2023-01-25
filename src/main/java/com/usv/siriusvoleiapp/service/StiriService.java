@@ -61,7 +61,7 @@ public class StiriService {
                                 .status(stire.getStatus())
                                 .dataPublicarii(stire.getDataPublicarii())
                                 .imagini(stire.getImagini())
-                                .imaginiURL(stire.getImagini().length()!=0?
+                                .imaginiURL(stire.getImagini()!=null?
                                         Arrays.stream(stire.getImagini().split(", ")).map(img->
                                                         azureBlobAdapter.getFileURL(img)+" "
                                                 ).toList():null
@@ -261,7 +261,7 @@ public class StiriService {
         });
         String numeImaginiStiri=stire.getImagini();
 
-        if(numeImaginiStiri.length()!=0 && stiriDto.getImagini().length()!=0)
+        if(numeImaginiStiri!=null && stiriDto.getImagini()!=null)
         {
             List<String> imagini= Arrays.stream(stire.getImagini().split(", ")).toList();
             List<String> imaginiNoi= Arrays.stream(stiriDto.getImagini().split(", ")).toList();
@@ -279,7 +279,7 @@ public class StiriService {
             }
         }
 
-        if(numeImaginiStiri.length()!=0 && stiriDto.getImagini().length()==0)
+        if(numeImaginiStiri!=null && stiriDto.getImagini()==null)
         {
             List<String> imagini= Arrays.stream(stire.getImagini().split(", ")).toList();
             for (String s : imagini) azureBlobAdapter.deleteBlob(s);
@@ -290,7 +290,7 @@ public class StiriService {
         if(!multipartFiles.isEmpty())
         {
             String numeImaginiStiriNoi=azureBlobAdapter.uploadMultipleFile(multipartFiles);
-            if(numeImaginiStiri.length()!=0)
+            if(numeImaginiStiri!=null)
                 numeImaginiStiri=numeImaginiStiri+", "+numeImaginiStiriNoi;
             else
                 numeImaginiStiri=numeImaginiStiriNoi;
@@ -316,14 +316,14 @@ public class StiriService {
 
         String numeImaginiStiri=stire.getImagini();
 
-        if(numeImaginiStiri.length()!=0 && stiriDto.getImagini().length()!=0)
+        if(numeImaginiStiri!=null && stiriDto.getImagini()!=null)
         {
             List<String> imagini= Arrays.stream(stire.getImagini().split(", ")).toList();
             List<String> imaginiNoi= Arrays.stream(stiriDto.getImagini().split(", ")).toList();
 
             List<String> updateImagini= findDifference(imagini, imaginiNoi);
 
-            if(updateImagini.size()!=0){
+            if(updateImagini!=null){
                 for (String s : updateImagini) azureBlobAdapter.deleteBlob(s);
 
                 numeImaginiStiri=imaginiNoi.get(0);
@@ -334,7 +334,7 @@ public class StiriService {
             }
         }
 
-        if(numeImaginiStiri.length()!=0 && stiriDto.getImagini().length()==0)
+        if(numeImaginiStiri!=null && stiriDto.getImagini()==null)
         {
             List<String> imagini= Arrays.stream(stire.getImagini().split(", ")).toList();
             for (String s : imagini) azureBlobAdapter.deleteBlob(s);

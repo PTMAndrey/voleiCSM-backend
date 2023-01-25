@@ -29,4 +29,6 @@ public class Premii {
     private Long idDivizie;
 
     private String numeDivizie;
+
+    private String numeEditie;
 }
